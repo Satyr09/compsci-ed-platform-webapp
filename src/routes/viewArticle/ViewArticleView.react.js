@@ -5,8 +5,10 @@ import { articles } from "../../testArticles";
 import showdown from "showdown";
 import { Divider, Card } from "antd";
 import marked from "marked";
-
+import { withRouter } from "react-router-dom";
 import sampleMarkdownText from "../../testArticles/sampleMarkDown.md";
+import queryString from "query-string";
+import draftToHtml from "draftjs-to-html";
 
 const ViewArticleView = props => {
   const onSubmit = async () => {
@@ -41,39 +43,50 @@ const ViewArticleView = props => {
       />
     );
   }, []);
-  const articleArea = document.getElementById("articleContent");
-  const firstArticle = articles ? articles[0] : {};
+  // const articleArea = document.getElementById("articleContent");
+  // const firstArticle = articles ? articles[0] : {};
 
   const [article, setArticle] = React.useState({});
+  // React.useEffect(() => {
+  //   const article = articles[0];
+  //   const convertor = new showdown.Converter();
+
+  //   const html = convertor.makeHtml(sampleMarkdownText);
+  //   console.log(article);
+  //   console.log(html);
+
+  //   fetch(sampleMarkdownText)
+  //     .then(response => {
+  //       return response.text();
+  //     })
+  //     .then(text => {
+  //       setArticle({
+  //         ...article,
+  //         markdown: marked(text),
+  //       });
+  //     });
+
+  //   setArticle({
+  //     title: article.title,
+  //     author: article.author,
+  //     date: article.date,
+  //   });
+  // }, [articleArea, firstArticle]);
+
   React.useEffect(() => {
-    const article = articles[0];
-    const convertor = new showdown.Converter();
-
-    const html = convertor.makeHtml(sampleMarkdownText);
-    console.log(article);
-    console.log(html);
-
-    fetch(sampleMarkdownText)
-      .then(response => {
-        return response.text();
+    const qParams = queryString.parse(props.location.search);
+    fetch(`localhost:5000/article/${qParams.id}`)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        setArticle(data);
+        document.getElementById("articleContent").innerHTML = draftToHtml(
+          article.content,
+        );
       })
-      .then(text => {
-        setArticle({
-          ...article,
-          markdown: marked(text),
-        });
-      });
+      .catch(err => console.error(err));
+  }, [article.content, article.markdown, props.location.search]);
 
-    setArticle({
-      title: article.title,
-      author: article.author,
-      date: article.date,
-    });
-  }, [articleArea, firstArticle]);
-
-  React.useEffect(() => {
-    document.getElementById("articleContent").innerHTML = article.markdown;
-  }, [article.markdown]);
   return (
     <Card bodyStyle={{ padding: "25px" }} style={{ borderRadius: "5px" }}>
       <div className={s.pageWrapper}>
@@ -102,4 +115,4 @@ const ViewArticleView = props => {
     </Card>
   );
 };
-export default ViewArticleView;
+export default withRouter(ViewArticleView);

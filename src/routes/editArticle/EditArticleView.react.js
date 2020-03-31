@@ -1,7 +1,7 @@
 import React from "react";
 import { Editor } from "react-draft-wysiwyg";
 import s from "./EditArticle.module.css";
-import { Card, Button } from "antd";
+import { Card, Button, Input, Divider } from "antd";
 import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Typography } from "antd";
 import draftToHtml from "draftjs-to-html";
@@ -27,13 +27,31 @@ const EditArticleView = props => {
   };
 
   const [contentState, setContentState] = React.useState();
+  const [title, setTitle] = React.useState();
 
   const handleArticleSubmit = e => {
-    console.log(contentState);
+    fetch("localhost:5000/article", {
+      method: "POST",
+      body: {
+        title,
+        content: contentState,
+        author: "Lambda Phi",
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        window.location.reload();
+      })
+      .catch(err => console.error(err));
+
     console.log(draftToHtml(contentState));
   };
   const contentStateChangeHandler = contentState => {
     setContentState(contentState);
+  };
+  const handleTitleChange = e => {
+    setTitle(e.target.value);
   };
 
   React.useEffect(() => {
@@ -48,6 +66,13 @@ const EditArticleView = props => {
         public
       </div>
 
+      <Input
+        onChange={handleTitleChange}
+        value={title}
+        placeholder="Title..."
+      />
+
+      <Divider />
       <Editor
         wrapperClassName={s.editorWrapper}
         editorClassName={s.textAreaWrapper}

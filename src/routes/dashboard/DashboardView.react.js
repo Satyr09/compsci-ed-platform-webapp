@@ -30,7 +30,7 @@ const DashboardView = props => {
 
   React.useEffect(() => {
     console.log("FETCHING");
-    fetch("https://jsonplaceholder.typicode.com/posts")
+    fetch("localhost:5000/article")
       .then(res => res.json())
       .then(data => {
         console.log(data);
@@ -40,22 +40,12 @@ const DashboardView = props => {
               return {
                 ...post,
                 ratings: (Math.random() * (5 - 1) + 1).toFixed(1),
-                title: post.title
-                  .replace(/\w\S*/g, function(txt) {
-                    return (
-                      txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-                    );
-                  })
-                  .substr(0, 30),
-                date: new Date()
-                  .toJSON()
-                  .slice(0, 10)
-                  .replace(/-/g, "/"),
               };
             })
             .sort((a, b) => b.ratings.localeCompare(a.ratings)),
         );
-      });
+      })
+      .catch(err => console.error(err));
   }, []);
 
   const Bookmark = () => (
@@ -162,21 +152,9 @@ const DashboardView = props => {
                           marginBottom: 10,
                         }}
                       >
-                        Cormen Stein
+                        {post.author || "Cormen Stein"}
                       </div>
-                      {/* <Badge
-                      count={tags[avatarIdx]}
-                      style={{
-                        background: colors[avatarIdx],
-                      }}
-                    />{" "}
-                    &nbsp;
-                    <Badge
-                      count={tags[(avatarIdx + 2) % tags.length]}
-                      style={{
-                        background: colors[(avatarIdx + 2) % tags.length],
-                      }}
-                    /> */}
+
                       <span style={{ fontWeight: 500 }}>Topics : </span>
                       <span style={{ color: "#9c9797", fontSize: 13 }}>
                         {tags[(avatarIdx + 2) % tags.length]} ,{" "}

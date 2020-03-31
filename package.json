@@ -13,6 +13,7 @@
     "draftjs-to-html": "^0.9.1",
     "immutable": "^4.0.0-rc.12",
     "marked": "^0.8.2",
+    "query-string": "^6.11.1",
     "react": "^16.13.0",
     "react-ace": "^8.1.0",
     "react-dom": "^16.13.0",
