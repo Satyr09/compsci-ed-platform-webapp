@@ -30,13 +30,14 @@ const EditArticleView = props => {
   const [title, setTitle] = React.useState();
 
   const handleArticleSubmit = e => {
-    fetch("localhost:5000/article", {
+    console.log("POSTING.....");
+    fetch("http://localhost:5000/article", {
       method: "POST",
-      body: {
+      body: JSON.stringify({
         title,
         content: contentState,
         author: "Lambda Phi",
-      },
+      }),
     })
       .then(res => res.json())
       .then(data => {

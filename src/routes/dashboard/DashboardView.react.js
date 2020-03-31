@@ -30,7 +30,7 @@ const DashboardView = props => {
 
   React.useEffect(() => {
     console.log("FETCHING");
-    fetch("localhost:5000/article")
+    fetch("http://localhost:5000/article")
       .then(res => res.json())
       .then(data => {
         console.log(data);

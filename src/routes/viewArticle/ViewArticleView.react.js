@@ -75,7 +75,7 @@ const ViewArticleView = props => {
 
   React.useEffect(() => {
     const qParams = queryString.parse(props.location.search);
-    fetch(`localhost:5000/article/${qParams.id}`)
+    fetch(`http://localhost:5000/article/${qParams.id}`)
       .then(res => res.json())
       .then(data => {
         console.log(data);
