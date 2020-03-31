@@ -4,17 +4,42 @@ import s from "./EditArticle.module.css";
 import { Card, Button } from "antd";
 import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Typography } from "antd";
+import draftToHtml from "draftjs-to-html";
+
+import { convertFromRaw } from "draft-js";
 
 const { Title } = Typography;
 
-const EditorComponent = () => (
-  <Editor
-    wrapperClassName={s.editorWrapper}
-    editorClassName={s.textAreaWrapper}
-  />
-);
-
 const EditArticleView = props => {
+  const fakeContent = {
+    entityMap: {},
+    blocks: [
+      {
+        key: "637gr",
+        text: "Initialized from content state.",
+        type: "unstyled",
+        depth: 0,
+        inlineStyleRanges: [],
+        entityRanges: [],
+        data: {},
+      },
+    ],
+  };
+
+  const [contentState, setContentState] = React.useState();
+
+  const handleArticleSubmit = e => {
+    console.log(contentState);
+    console.log(draftToHtml(contentState));
+  };
+  const contentStateChangeHandler = contentState => {
+    setContentState(contentState);
+  };
+
+  React.useEffect(() => {
+    console.log("whoosh");
+  }, []);
+
   return (
     <Card className={s.wrapper} bodyStyle={{ padding: 45 }}>
       <div className={s.cardHeader}>Create or edit articles</div>
@@ -23,12 +48,18 @@ const EditArticleView = props => {
         public
       </div>
 
-      <EditorComponent />
+      <Editor
+        wrapperClassName={s.editorWrapper}
+        editorClassName={s.textAreaWrapper}
+        onContentStateChange={contentStateChangeHandler}
+        defaultContentState={fakeContent}
+      />
 
       <Button
         style={{ float: "right", marginTop: "20px" }}
         size="large"
         type="primary"
+        onClick={handleArticleSubmit}
       >
         Submit article
       </Button>
