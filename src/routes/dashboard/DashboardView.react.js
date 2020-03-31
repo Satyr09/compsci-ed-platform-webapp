@@ -112,7 +112,10 @@ const DashboardView = props => {
             .map(post => {
               const avatarIdx = post.id % avatars.length;
               return (
-                <div className={s.postContainer}>
+                <div
+                  className={s.postContainer}
+                  onClick={e => window.location.replace(`/view?id=${post._id}`)}
+                >
                   <Row className={s.postRow}>
                     <Col
                       sm={{ span: 3, offset: 0 }}
