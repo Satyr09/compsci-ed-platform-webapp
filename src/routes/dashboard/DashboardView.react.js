@@ -1,10 +1,8 @@
 import React from "react";
-import { Editor } from "react-draft-wysiwyg";
 import s from "./DashboardView.module.css";
 import { Row, Col, Card, Input, Badge, Select, Divider } from "antd";
 import Icon, { StarFilled } from "@ant-design/icons";
 import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { Typography } from "antd";
 import BookmarkIcon from "../../bookmark.png";
 import avatar1 from "../../avatars/avatar1.png";
 import avatar2 from "../../avatars/avatar2.png";
@@ -12,8 +10,8 @@ import avatar3 from "../../avatars/avatar3.png";
 import avatar4 from "../../avatars/avatar4.png";
 import avatar5 from "../../avatars/avatar5.png";
 import avatar6 from "../../avatars/avatar6.png";
+import { withRouter } from "react-router-dom";
 
-const { Title } = Typography;
 const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6];
 const tags = [
   "Arrays",
@@ -24,7 +22,7 @@ const tags = [
   "Sorting",
   "Segment Tree",
 ];
-const colors = ["#f9e26e", "orange", "0a30760", "purple", "red", "brown"];
+
 const DashboardView = props => {
   const [posts, setPosts] = React.useState();
 
@@ -40,6 +38,7 @@ const DashboardView = props => {
               return {
                 ...post,
                 ratings: (Math.random() * (5 - 1) + 1).toFixed(1),
+                date: post.date.split("T")[0],
               };
             })
             .sort((a, b) => b.ratings.localeCompare(a.ratings)),
@@ -73,15 +72,17 @@ const DashboardView = props => {
         <div className={s.subHeader}>
           Browse a curated catalogue of technical articles
         </div>
+        <Divider />
         <div className={`dashboardButtonsWrapper ${s.buttonsWrapper}`}>
           <Row>
             <Col sm={{ span: 10, offset: 0 }} xs={{ span: 24, offset: 0 }}>
               <div className={s.filterInput}>
                 <Input
                   className={s.filterInput}
-                  placeholder="Filter ..."
+                  placeholder="Filter by artice title..."
                   value={filterText || ""}
                   onChange={e => handleFilter(e)}
+                  style={{ border: "none !important" }}
                 />
               </div>
             </Col>
@@ -109,34 +110,35 @@ const DashboardView = props => {
                 .toLowerCase()
                 .includes((filterText || "").toLowerCase()),
             )
-            .map(post => {
+            .map((post, idx) => {
               const avatarIdx = post.id % avatars.length;
               return (
                 <div
                   className={s.postContainer}
-                  onClick={e => window.location.replace(`/view?id=${post._id}`)}
+                  onClick={e => props.history.push(`/view?id=${post._id}`)}
                 >
                   <Row className={s.postRow}>
                     <Col
-                      sm={{ span: 3, offset: 0 }}
+                      sm={{ span: 2, offset: 0 }}
                       xs={{ span: 24, offset: 0 }}
                     >
                       <div
                         style={{
-                          width: 65,
-                          background: "yellow",
-                          height: 65,
-                          borderRadius: "50%",
                           textAlign: "center",
                           alignItems: "center",
-                          padding: "5%",
+                          display: "flex",
+                          justifyContent: "center",
+                          height: "100%",
+                          wdith: "100%",
                         }}
                       >
-                        <img
-                          src={avatars[post.id % avatars.length]}
+                        <div
                           style={{
-                            maxHeight: "100%",
-                            maxWidth: "100%",
+                            width: 50,
+                            height: 50,
+                            borderRadius: "50%",
+                            objectFit: "contain",
+                            background: `url(${avatars[idx % avatars.length]})`,
                           }}
                           alt="avatar"
                         />
@@ -144,7 +146,7 @@ const DashboardView = props => {
                     </Col>
 
                     <Col
-                      sm={{ span: 10, offset: 1 }}
+                      sm={{ span: 9, offset: 1 }}
                       xs={{ span: 24, offset: 0 }}
                     >
                       <div className={s.titleWrapper}>{post.title}</div>
@@ -152,21 +154,33 @@ const DashboardView = props => {
                         style={{
                           color: "#b4acac",
                           fontSize: "12px",
-                          marginBottom: 10,
+                          marginBottom: 5,
                         }}
                       >
                         {post.author || "Cormen Stein"}
                       </div>
 
                       <span style={{ fontWeight: 500 }}>Topics : </span>
-                      <span style={{ color: "#9c9797", fontSize: 13 }}>
-                        {tags[(avatarIdx + 2) % tags.length]} ,{" "}
-                        {tags[avatarIdx]}
+                      <span>
+                        <span className={s.tagSpan}>
+                          {tags[(idx + 2) % tags.length]}
+                        </span>
+                        <span className={s.tagSpan}>{tags[idx]}</span>
                       </span>
                     </Col>
 
                     <Col
-                      sm={{ span: 6, offset: 1 }}
+                      sm={{ span: 4, offset: 1 }}
+                      xs={{ span: 24, offset: 0 }}
+                    >
+                      <div className={s.dateWrapper}>
+                        <div className={s.createdText}>Created :</div>
+                        <span style={{ width: "7.5px" }}></span>
+                        {post.date}
+                      </div>
+                    </Col>
+                    <Col
+                      sm={{ span: 3, offset: 1 }}
                       xs={{ span: 24, offset: 0 }}
                     >
                       <div className={s.metaDataWrapper}>
@@ -175,10 +189,6 @@ const DashboardView = props => {
                           <span style={{ color: "#f9e26e" }}>
                             <StarFilled />
                           </span>
-                        </div>
-                        <div className={s.dateWrapper}>
-                          Created : <span style={{ width: "7.5px" }}></span>
-                          {post.date}
                         </div>
                       </div>
                     </Col>
@@ -191,7 +201,6 @@ const DashboardView = props => {
                       <Icon component={Bookmark} />
                     </Col>
                   </Row>
-                  <Divider />
                 </div>
               );
             })}
@@ -200,4 +209,4 @@ const DashboardView = props => {
   );
 };
 
-export default DashboardView;
+export default withRouter(DashboardView);

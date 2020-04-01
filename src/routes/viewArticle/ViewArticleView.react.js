@@ -16,7 +16,7 @@ const ViewArticleView = props => {
 
     try {
       console.log("Posting code");
-      const response = await fetch("http://localhost:8080/compile", {
+      const response = await fetch("http://localhost:5000/compile", {
         method: "POST",
         body: JSON.stringify({ code: codeValue }),
       });
@@ -26,7 +26,7 @@ const ViewArticleView = props => {
 
       document.getElementById("outputArea").innerHTML = data;
 
-      const finalResponse = await fetch("http://localhost:8080/run");
+      const finalResponse = await fetch("http://localhost:5000/run");
       const answer = await finalResponse.text();
       console.log(answer, " ", finalResponse);
       document.getElementById("outputArea").innerHTML = answer;
@@ -43,35 +43,7 @@ const ViewArticleView = props => {
       />
     );
   }, []);
-  // const articleArea = document.getElementById("articleContent");
-  // const firstArticle = articles ? articles[0] : {};
-
   const [article, setArticle] = React.useState({});
-  // React.useEffect(() => {
-  //   const article = articles[0];
-  //   const convertor = new showdown.Converter();
-
-  //   const html = convertor.makeHtml(sampleMarkdownText);
-  //   console.log(article);
-  //   console.log(html);
-
-  //   fetch(sampleMarkdownText)
-  //     .then(response => {
-  //       return response.text();
-  //     })
-  //     .then(text => {
-  //       setArticle({
-  //         ...article,
-  //         markdown: marked(text),
-  //       });
-  //     });
-
-  //   setArticle({
-  //     title: article.title,
-  //     author: article.author,
-  //     date: article.date,
-  //   });
-  // }, [articleArea, firstArticle]);
 
   React.useEffect(() => {
     const qParams = queryString.parse(props.location.search);

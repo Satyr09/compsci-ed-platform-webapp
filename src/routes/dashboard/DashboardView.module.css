@@ -1,12 +1,17 @@
 .postContainer {
-  min-height: 100px;
   width: 100%;
   /* margin: 25px auto;*/
   background: white;
   /* border-radius: 10px;
   box-shadow: 3px 4px 7px -5px rgba(95, 93, 93, 0.75); */
-  padding: 20px;
+  padding: 15px 20px;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.postContainer:hover {
+  box-shadow: 3px 4px 7px 5px rgba(223, 221, 221, 0.75);
+  border-radius: 10px;
+  transform: scale(1.05);
 }
 .header {
   margin: 10px 0;
@@ -43,6 +48,19 @@
 .ratingsWrapper {
   margin-bottom: 10px;
 }
+.filterInput > input {
+  border: none !important;
+  border-bottom: 1px solid #cecece !important;
+}
+.filterInput > input:hover {
+  border: none !important;
+  border-bottom: 1px solid #2079f6 !important;
+}
+.filterInput > input:focus {
+  border: none !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid #2079f6 !important;
+}
 .ratingsText {
   color: black;
   font-size: 16px;
@@ -50,13 +68,30 @@
   letter-spacing: 0.01em;
   margin-right: 5px;
 }
+.tagSpan {
+  color: #2079f6;
+  font-size: 12px;
+  font-weight: 500;
+  background: #fff4f4;
+  padding: 2px 5px;
+  margin-right: 5px;
+  border-radius: 2px;
+}
+.createdText {
+  color: black;
+  font-weight: 500;
+}
 .dateWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  align-items: center;
   font-size: 14px;
   color: #9c9797;
 }
 
 .titleWrapper {
-  margin-bottom: 5px;
   font-size: 18px;
   font-weight: 500;
 }
