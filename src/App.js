@@ -13,6 +13,7 @@ import {
   HomeOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import Form from './Containers/Form';
 
 const { Content, Sider } = Layout;
 
@@ -78,6 +79,9 @@ function App() {
               </Route>
               <Route path="/dashboard">
                 <Dashboard />
+              </Route>
+              <Route path="/form">
+                <Form/>
               </Route>
             </Switch>
           </Router>
