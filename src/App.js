@@ -17,6 +17,7 @@ import {
   HomeOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import Form from './Containers/Form';
 
 const { Content, Sider } = Layout;
 
@@ -89,6 +90,10 @@ function App() {
               <Route exact path="/new_topic" component={NewTopic} />
               <Route exact path="/topic_overview" component={TopicOverview} />
               <Route exact path="/topic" component={topic} />
+              <Route path="/form">
+                <Form/>
+              </Route>
+
             </Switch>
           </Router>
         </Content>
