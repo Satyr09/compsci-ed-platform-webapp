@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Pagination, Table, Card  } from 'antd';
+import { Pagination, Table, Card, Layout  } from 'antd';
 import {  NavLink } from "react-router-dom";
-
 
 const { Column  } = Table;
 
@@ -96,47 +95,23 @@ class Mainpage extends Component {
                         <aside>
                             <div className="row">
                                 <div className="col-12 col-sm-6 col-xl-12">
-                                    <Card  className="card" style={{ width: 300 }}>
-                                        <h2 className="h4 card-title">Member online</h2>
-                                        <ul className="list-unstyleed">
-                                            <li><a href="#0">Forum member name</a></li>
-                                            <li><a href="#0">Forum member name</a></li>
-                                            <li><a href="#0">Forum member name</a></li>
-                                            <li><a href="#0">Forum member name</a></li>
-                                            <li><a href="#0">Forum member name</a></li>
-                                            <li><a href="#0">Forum member name</a></li>
-                                        </ul>
+                                    <Card  className="card" title="Member online" style={{ width: 300 }}>
+                                        <p><a href="#0">Forum member name</a></p>
+                                        <p><a href="#0">Forum member name</a></p>
+                                        <p><a href="#0">Forum member name</a></p>
+                                        <p><a href="#0">Forum member name</a></p>
                                     </Card>
-                                    <Card style={{ width: 300 }}>
-                                        <dl className="row">
-                                            <dt className="col-8">Total:</dt>
-                                            <dd className="col-4">10</dd>
-                                        </dl>
-                                        <dl className="row">
-                                            <dt className="col-8">Member:</dt>
-                                            <dd className="col-4">7</dd>
-                                        </dl>
-                                        <dl className="row">
-                                            <dt className="col-8">Guests:</dt>
-                                            <dd className="col-4">3</dd>
-                                        </dl>
+                                    <Card title="Members Online" style={{ width: 300 }}>
+                                        <p>Total: 10</p>
+                                        <p>Member: 7</p>
+                                        <p>Guests: 3</p>
                                     </Card>
                                 </div>
                                 <div className="col-12 col-sm-6 col-xl-12">
-                                    <Card  className="card" style={{ width: 300 }}>
-                                        <h2 className="h4 card-title">Forum stastistics</h2>
-                                        <dl>
-                                            <dt>Total forums:</dt>
-                                            <dd>10</dd>
-                                        </dl>
-                                        <dl>
-                                            <dt>Total Topics:</dt>
-                                            <dd>7</dd>
-                                        </dl>
-                                        <dl>
-                                            <dt>Total members:</dt>
-                                            <dd>3</dd>
-                                        </dl>
+                                    <Card  className="card" title="Forum stastistics" style={{ width: 300 }}>
+                                        <p>Total forums: 10</p>
+                                        <p>Total Topics: 7</p>
+                                        <p>Total Topics: 3</p>
                                     </Card>
                                 </div>
                             </div>

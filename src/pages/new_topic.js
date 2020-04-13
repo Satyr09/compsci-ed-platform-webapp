@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Popconfirm, notification, Alert } from 'antd';
-import { QuestionCircleOutlined, RadiusUpleftOutlined } from '@ant-design/icons';
+import { Popconfirm, Alert } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 class NewTopic extends Component {
 
     state = {
         redirect: false,
         formRef : React.createRef(),
-        Err:"",
+        topicErr:"",
+        contentErr:"",
     }
 
     constructor(props) {
@@ -23,15 +24,26 @@ class NewTopic extends Component {
         const topic = this.topicElRef.current.value;
         const content = this.contentElRef.current.value;
         
-        let Err="";
+        let topicErr="";
+        let contentErr="";
+        if(topic.trim().length === 0 ){
+            topicErr = <Alert message="The Above field cannot be left empty" type="warning" closable showIcon />;
+        }
 
-        if(topic.trim().length === 0 || content.trim().length === 0){
-            Err = <Alert message="The Above field cannot be left empty" type="warning" closable showIcon />;
+        if(content.trim().length === 0 ){
+            contentErr = <Alert message="The Above field cannot be left empty" type="warning" closable showIcon />;
+        }
+
+        if(content.trim().length === 0 && topic.trim().length === 0 ){
+            topicErr = <Alert message="The Above field cannot be left empty" type="warning" closable showIcon />;
+            contentErr = <Alert message="The Above field cannot be left empty" type="warning" closable showIcon />;
         }
 
         this.setState({
-            Err
+            topicErr,
+            contentErr
         })
+
 
         if(this.state.Err){
             return;
@@ -60,20 +72,12 @@ class NewTopic extends Component {
     };
 
     onConfirm= () => {
-        if(this.state.Err){
+        if(this.state.contentErr || this.state.topicErr){
             return;
         }
         window.location.assign("/forum");
     }
 
-    openNotification = placement => {
-        notification.info({
-          message: `Notification ${placement}`,
-          description:
-            'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-          placement,
-        });
-    };
 
     render() {
 
@@ -103,12 +107,12 @@ class NewTopic extends Component {
                         <div className="form-group">
                             <label htmlFor="topic">Topic</label>
                             <input type="text" className="form-control" id="topic" ref={this.topicElRef} placeholder="Give your topic a title." required />
-                            <div>{this.state.Err}</div>
+                            <div>{this.state.topicErr}</div>
                         </div>
                         <div className="form-group">
                             <label htmlFor="content">Content:</label>
                             <textarea className="form-control" id="content" rows="10" placeholder="Write your content here." ref={this.contentElRef} required />
-                            <div>{this.state.Err}</div>
+                            <div>{this.state.contentErr}</div>
                         </div>
                         <div className="form-check">
                             <label className="form-check-label">
