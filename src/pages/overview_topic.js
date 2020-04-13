@@ -73,14 +73,14 @@ class TopicOverview extends Component {
                 <nav className="breadcrumb">
                     {/*<Link to="/forum" className="breadcrumb-item">Board index</Link>
                     <Link to="/forum_category" className="breadcrumb-item">Forum category</Link>
-                    <span className="breadcrumb-item active">Forum name</span>*/}
+                    <span className="breadcrumb-item active">Forum name</span>
+                                            <Breadcrumb.Item href="/forum_category">
+                        <UserOutlined/>
+                        <span  className="breadcrumb-item">Forum category</span>
+                        </Breadcrumb.Item>*/}
                     <Breadcrumb>
                         <Breadcrumb.Item href="/forum">
                         <HomeOutlined className="breadcrumb-item"/>
-                        </Breadcrumb.Item>
-                        <Breadcrumb.Item href="/forum_category">
-                        <UserOutlined/>
-                        <span  className="breadcrumb-item">Forum category</span>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item className="breadcrumb-item active">Forum name</Breadcrumb.Item>
                     </Breadcrumb>

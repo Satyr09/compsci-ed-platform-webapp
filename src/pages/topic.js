@@ -1,17 +1,79 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withRouter } from "react-router-dom";
-import { Table } from 'antd';
+import { Comment, Avatar, Form, Button, List, Input, Table } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import moment from 'moment';
+
+const { TextArea } = Input;
 
 const { Column  } = Table;
 
+const CommentList = ({ comments }) => (
+    <List
+      dataSource={comments}
+      header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
+      itemLayout="horizontal"
+      renderItem={props => <Comment {...props} />}
+    />
+);
+
+const Editor = ({ onChange, onSubmit, submitting, value }) => (
+    <div>
+      <Form.Item>
+        <TextArea rows={4} onChange={onChange} value={value} />
+      </Form.Item>
+      <Form.Item>
+        <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
+          Add Comment
+        </Button>
+      </Form.Item>
+    </div>
+);
+
 class Topic extends Component {
 
+    state = {
+        comments: [],
+        submitting: false,
+        value: '',
+    };
+    
     constructor(props){
         super(props);
 
     }
 
+    handleSubmit = () => {
+        if (!this.state.value) {
+          return;
+        }
+    
+        this.setState({
+          submitting: true,
+        });
+    
+        setTimeout(() => {
+          this.setState({
+            submitting: false,
+            value: '',
+            comments: [
+              {
+                author: 'User@gmial.com',
+                content: <p>{this.state.value}</p>,
+                datetime: moment().fromNow(),
+              },
+              ...this.state.comments,
+            ],
+          });
+        }, 1000);
+      };
+    
+      handleChange = e => {
+        this.setState({
+          value: e.target.value,
+        });
+    };
     
     render() {
 
@@ -24,11 +86,11 @@ class Topic extends Component {
             {
                 key: '1',
                 author: '',
-                message: 'Invitation to Apeireon Hacking Challenge'
+                message: 'Invitation to Apeireon Hacking Challenge. Invitation to Apeireon Hacking Challenge. Invitation to Apeireon Hacking Challenge. Invitation to Apeireon Hacking Challenge. Invitation to Apeireon Hacking Challenge'
             },
         ];
 
-
+        const { comments, submitting, value } = this.state;
 
         return(
             
@@ -45,7 +107,6 @@ class Topic extends Component {
             <div className="container my-3">
                 <nav className="breadcrumb">
                     <Link to="/forum" className="breadcrumb-item">Board index</Link>
-                    <Link to="/forum_category" className="breadcrumb-item">Forum category</Link>
                     <Link to="/topic_overview" className="breadcrumb-item">Forum name</Link>
                     <span className="breadcrumb-item active">Invitation to Apeireon Hacking Challenge</span>
                 </nav>
@@ -59,14 +120,31 @@ class Topic extends Component {
                     </div>
                 </div>
 
-                <form className="mb-3">
+                <div>
+                    {comments.length > 0 && <CommentList comments={comments} />}
+                    <Comment
+                    avatar={
+                        <Avatar icon={<UserOutlined />} />
+                    }
+                    content={
+                        <Editor
+                        onChange={this.handleChange}
+                        onSubmit={this.handleSubmit}
+                        submitting={submitting}
+                        value={value}
+                        />
+                    }
+                    />
+                </div>
+
+                {/*<form className="mb-3">
                     <div className="form-group">
                         <label htmlFor="comment">Reply to this post:</label>
                         <textarea className="form-control" id="comment" rows="10" ref={this.commentElref} placeholder="Write your comment here." required></textarea>
                     </div>
                     <button type="submit" className="btn btn-primary" onClick={this.topicHandler}>Reply</button>
                     <button type="reset" className="btn btn-danger">Reset</button>
-                </form>
+                </form>*/}
             </div> 
             </div>
         );

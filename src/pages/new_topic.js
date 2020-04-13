@@ -65,7 +65,6 @@ class NewTopic extends Component {
             <div className="container my-3">
                 <nav className="breadcrumb">
                     <Link to="/forum" className="breadcrumb-item">Board index</Link>
-                    <Link to="/forum_category" className="breadcrumb-item">Forum category</Link>
                     <Link to="/topic_overview" className="breadcrumb-item">Forum name</Link>
                     <span className="breadcrumb-item active">Create new topic</span>
                 </nav>
