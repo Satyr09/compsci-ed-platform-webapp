@@ -3,6 +3,11 @@ import s from "./App.module.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import EditArticleView from "./routes/editArticle";
 import ViewArticleView from "./routes/viewArticle";
+import Mainpage from "./pages/index";
+import NewTopic from "./pages/new_topic";
+import ForumCategory from "./pages/overview_forum_category";
+import TopicOverview from "./pages/overview_topic";
+import topic from "./pages/topic";
 import Dashboard from "./routes/dashboard";
 import "antd/dist/antd.css";
 import { Menu, Layout } from "antd";
@@ -79,6 +84,13 @@ function App() {
               <Route path="/dashboard">
                 <Dashboard />
               </Route>
+              <Route exact path="/forum" >
+                <Mainpage />
+              </Route>
+              <Route exact path="/new_topic" component={NewTopic} />
+              <Route exact path="/forum_category" component={ForumCategory} />
+              <Route exact path="/topic_overview" component={TopicOverview} />
+              <Route exact path="/topic" component={topic} />
             </Switch>
           </Router>
         </Content>
