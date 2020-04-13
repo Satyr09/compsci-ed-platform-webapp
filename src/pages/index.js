@@ -77,14 +77,14 @@ class Mainpage extends Component {
                                 <Column scope="col" title="Statistics" dataIndex="statistics" key="statistics"/>
                                 <Column scope="col" className="last-post-col" title="Last Post" dataIndex="lastpost" key="lastpost"/>
                             </Table>
-                        <h2 className="h4 text-white bg-danger mb-0 p-4 rounded-top">Forum category</h2>
+                        <h2 className="h4 text-white bg-danger mb-0 p-4 rounded-top"><NavLink to="/topic_overview" className="text-white">Forum category</NavLink></h2>
                             <Table className="table table-striped table-bordered table-responsive-lg" dataSource = { eventList }>
                                 <Column scope="col" className="topic-col" title="Topic" dataIndex="topic" key="topic" render={topic => <NavLink to="/topic">{topic}</NavLink>}/>
                                 <Column scope="col" className="created-col" title="Created" dataIndex="created" key="created"/>
                                 <Column scope="col" title="Statistics" dataIndex="statistics" key="statistics"/>
                                 <Column scope="col" className="last-post-col" title="Last Post" dataIndex="lastpost" key="lastpost"/>
                             </Table>
-                        <h2 className="h4 text-white bg-warning mb-0 p-4 rounded-top">Forum category</h2>
+                        <h2 className="h4 text-white bg-warning mb-0 p-4 rounded-top"><NavLink to="/topic_overview" className="text-white">Forum category</NavLink></h2>
                             <Table className="table table-striped table-bordered table-responsive-lg" dataSource = { eventList }>
                                 <Column scope="col" className="topic-col" title="Topic" dataIndex="topic" key="topic" render={topic => <NavLink to="/topic">{topic}</NavLink>}/>
                                 <Column scope="col" className="created-col" title="Created" dataIndex="created" key="created"/>

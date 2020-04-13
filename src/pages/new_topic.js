@@ -20,6 +20,10 @@ class NewTopic extends Component {
         const topic = this.topicElRef.current.value;
         const comment = this.commentElRef.current.value;
         
+        if(topic.trim().length === 0 || comment.trim().length === 0){
+            return window.location.assign("/forum");
+        }
+
         const events = {topic, comment};
         console.log(events);
         
