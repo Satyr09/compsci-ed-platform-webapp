@@ -1,30 +1,43 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import { Popconfirm, notification, Alert } from 'antd';
+import { QuestionCircleOutlined, RadiusUpleftOutlined } from '@ant-design/icons';
 
 class NewTopic extends Component {
 
     state = {
-        redirect: false
+        redirect: false,
+        formRef : React.createRef(),
+        Err:"",
     }
 
     constructor(props) {
         super(props);
         this.topicElRef = React.createRef();
-        this.commentElRef = React.createRef();
+        this.contentElRef = React.createRef();
     }
-
-
+    
 
     topicHandler = (props) => {
         props.preventDefault();
         const topic = this.topicElRef.current.value;
-        const comment = this.commentElRef.current.value;
+        const content = this.contentElRef.current.value;
         
-        if(topic.trim().length === 0 || comment.trim().length === 0){
-            return window.location.assign("/forum");
+        let Err="";
+
+        if(topic.trim().length === 0 || content.trim().length === 0){
+            Err = <Alert message="The Above field cannot be left empty" type="warning" closable showIcon />;
         }
 
-        const events = {topic, comment};
+        this.setState({
+            Err
+        })
+
+        if(this.state.Err){
+            return;
+        }
+        
+        const events = {topic, content};
         console.log(events);
         
         fetch("http://localhost:5000/topics", {
@@ -34,7 +47,7 @@ class NewTopic extends Component {
           },
         body: JSON.stringify({
             title: topic,
-            comment,
+            content,
             author: "Jackson"
         })
         })
@@ -44,10 +57,23 @@ class NewTopic extends Component {
         })
         .catch(err => console.error(err));
         
-        window.location.assign("/forum");
     };
 
+    onConfirm= () => {
+        if(this.state.Err){
+            return;
+        }
+        window.location.assign("/forum");
+    }
 
+    openNotification = placement => {
+        notification.info({
+          message: `Notification ${placement}`,
+          description:
+            'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+          placement,
+        });
+    };
 
     render() {
 
@@ -72,16 +98,17 @@ class NewTopic extends Component {
                     <div className="col-12">
                         <h2 className="h4 text-white bg-info mb-3 p-4 rounded">Create new topic</h2>
                     </div>
-                    {/*<Demo />*/}
                 </div>
                     <form className="mb-3">
                         <div className="form-group">
                             <label htmlFor="topic">Topic</label>
                             <input type="text" className="form-control" id="topic" ref={this.topicElRef} placeholder="Give your topic a title." required />
+                            <div>{this.state.Err}</div>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="comment">Comment:</label>
-                            <textarea className="form-control" id="comment" rows="10" placeholder="Write your comment here." ref={this.commentElRef} required />
+                            <label htmlFor="content">Content:</label>
+                            <textarea className="form-control" id="content" rows="10" placeholder="Write your content here." ref={this.contentElRef} required />
+                            <div>{this.state.Err}</div>
                         </div>
                         <div className="form-check">
                             <label className="form-check-label">
@@ -89,8 +116,10 @@ class NewTopic extends Component {
                                 Notify me on repllies.
                             </label>
                         </div>
+                        
+                        <Popconfirm title="Are you sure？" icon={<QuestionCircleOutlined style={{ color: 'red' }} />} onConfirm={this.onConfirm}>
                         <button type="submit" className="btn btn-primary" onClick={this.topicHandler} >Reply</button>
-                        <button type="reset" className="btn btn-danger">Reset</button>
+                        </Popconfirm>
                     </form>
                     
                 </div>
