@@ -99,9 +99,6 @@ class TopicOverview extends Component {
                     </div>
                 </div>
                 <div className="mb-3 clearfix">
-                    <nav aria-label="Navigate post pages" className="float-lg-right">
-                            <Pagination defaultCurrent={1} total={50} />
-                    </nav>
                     <Link to="/new_topic" className="btn btn-lg btn-primary">New topic</Link>
                 </div>
             </div> 

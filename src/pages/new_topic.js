@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Popconfirm, Alert } from 'antd';
+import { Popconfirm, Alert, Button } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
 class NewTopic extends Component {
@@ -122,7 +122,7 @@ class NewTopic extends Component {
                         </div>
                         
                         <Popconfirm title="Are you sure？" icon={<QuestionCircleOutlined style={{ color: 'red' }} />} onConfirm={this.onConfirm}>
-                        <button type="submit" className="btn btn-primary" onClick={this.topicHandler} >Reply</button>
+                        <Button type="submit" className="btn btn-primary" onClick={this.topicHandler} >Reply</Button>
                         </Popconfirm>
                     </form>
                     

@@ -45,7 +45,7 @@ class Mainpage extends Component {
                     topic: event.title,
                     created: 'Author Name',
                     statistics: '5 Reply',
-                    lastpost: '10 Mach 2020',
+                    lastpost: event.date,
                 }
             );
         });
