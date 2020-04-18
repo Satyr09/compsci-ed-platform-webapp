@@ -18,6 +18,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import Form from './Containers/Form';
+import Leaderboard from './components/Leaderboard/Leaderboard';
 
 const { Content, Sider } = Layout;
 
@@ -93,7 +94,9 @@ function App() {
               <Route path="/form">
                 <Form/>
               </Route>
-
+              <Route path="/leaderboard">
+                <Leaderboard/>
+              </Route>
             </Switch>
           </Router>
         </Content>
