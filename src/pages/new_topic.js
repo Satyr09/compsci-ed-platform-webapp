@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Popconfirm, Alert, Button } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
@@ -60,7 +60,7 @@ class NewTopic extends Component {
         body: JSON.stringify({
             title: topic,
             content,
-            author: "Jackson"
+            author: "Jackson",
         })
         })
         .then(res => res.json())
@@ -94,13 +94,12 @@ class NewTopic extends Component {
             </nav>
             <div className="container my-3">
                 <nav className="breadcrumb">
-                    <Link to="/forum" className="breadcrumb-item">Board index</Link>
-                    <Link to="/topic_overview" className="breadcrumb-item">Forum name</Link>
+                    <Link to="/forum" className="breadcrumb-item text-secondary">Board index</Link>
                     <span className="breadcrumb-item active">Create new topic</span>
                 </nav>
                 <div className="row">
                     <div className="col-12">
-                        <h2 className="h4 text-white bg-info mb-3 p-4 rounded">Create new topic</h2>
+                        <h2 className="h4 text-white bg-secondary mb-3 p-4 rounded">Create new topic</h2>
                     </div>
                 </div>
                     <form className="mb-3">
