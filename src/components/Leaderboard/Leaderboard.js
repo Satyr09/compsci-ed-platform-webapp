@@ -29,10 +29,12 @@ class Leaderboard extends Component{
 				
 			}
 			console.log(avgRating/c);
-			let a=[name,(avgRating/c).toFixed(2)];
+			let a=[(avgRating/c).toFixed(2),name];
 			m.push(a);
 			//console.log(this.state.rows);
 		}
+		m.sort();
+		m.reverse();
 		let i=0;
 		this.setState({
 			rows:m.map(()=>{
@@ -40,8 +42,8 @@ class Leaderboard extends Component{
 			return (
 				<tr className={classes.Tr} key={i}>
 					<td className={classes.Td}>{i}</td>
-					<td className={classes.Td}>{m[i-1][0]}</td>
 					<td className={classes.Td}>{m[i-1][1]}</td>
+					<td className={classes.Td}>{m[i-1][0]}</td>
 				</tr>
 			);
 			})
