@@ -5,6 +5,7 @@ import EditArticleView from "./routes/editArticle";
 import ViewArticleView from "./routes/viewArticle";
 import Mainpage from "./pages/index";
 import NewTopic from "./pages/new_topic";
+import Contest from "./pages/contest/contest";
 
 import topic from "./pages/topic";
 import Dashboard from "./routes/dashboard";
@@ -96,6 +97,9 @@ function App() {
               </Route>
               <Route path="/leaderboard">
                 <Leaderboard/>
+              </Route>
+              <Route path='/contest'>
+                <Contest />
               </Route>
             </Switch>
           </Router>

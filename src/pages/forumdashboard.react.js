@@ -103,12 +103,6 @@ const ForumDashboard = props => {
                     </Col>
 
                       <Col
-                        sm={{ span: 2, offset: 0 }}
-                        xs={{ span: 24, offset: 0 }}
-                      >
-                      </Col>
-
-                      <Col
                         sm={{ span: 9, offset: 1 }}
                         xs={{ span: 24, offset: 0 }}
                       >
