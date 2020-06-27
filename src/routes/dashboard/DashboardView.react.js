@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import s from "./DashboardView.module.css";
 import { Row, Col, Card, Input, Badge, Select, Divider } from "antd";
 import Icon, { StarFilled } from "@ant-design/icons";
@@ -11,6 +11,7 @@ import avatar4 from "../../avatars/avatar4.png";
 import avatar5 from "../../avatars/avatar5.png";
 import avatar6 from "../../avatars/avatar6.png";
 import { withRouter } from "react-router-dom";
+import { AuthContext } from "../../App";
 
 const avatars = [avatar1, avatar2, avatar3, avatar4, avatar5, avatar6];
 const tags = [
@@ -26,25 +27,37 @@ const tags = [
 const DashboardView = props => {
   const [posts, setPosts] = React.useState();
 
+  const authData = useContext(AuthContext);
+
+
   React.useEffect(() => {
-    console.log("FETCHING");
-    fetch("http://localhost:5000/article")
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        setPosts(
-          data
-            .map(post => {
-              return {
-                ...post,
-                ratings: (Math.random() * (5 - 1) + 1).toFixed(1),
-                date: post.date.split("T")[0],
-              };
-            })
-            .sort((a, b) => b.ratings.localeCompare(a.ratings)),
-        );
+    if (authData && authData.accessToken) {
+      fetch("http://localhost:5000/article/", {
+        method:"GET",
+        withCredentials: true,
+        mode:"cors",
+        credentials:"include",
+        headers: {
+            "Authorization": `JWT ${authData.accessToken}`
+        },
       })
-      .catch(err => console.error(err));
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          setPosts(
+            data
+              .map(post => {
+                return {
+                  ...post,
+                  ratings: (Math.random() * (5 - 1) + 1).toFixed(1),
+                  date: post.date.split("T")[0],
+                };
+              })
+              .sort((a, b) => b.ratings.localeCompare(a.ratings)),
+          );
+        })
+        .catch(err => console.error(err));
+    }
   }, []);
 
   const Bookmark = () => (
@@ -70,7 +83,7 @@ const DashboardView = props => {
       <Card bodyStyle={{ padding: 15 }} className={s.bodyCard}>
         <div className={s.header}>Articles </div>
         <div className={s.subHeader}>
-          Browse a curated catalogue of technical articles
+          {authData && authData.user &&  authData.user.firstName}, browse a curated catalogue of technical articles
         </div>
         <Divider />
         <div className={`dashboardButtonsWrapper ${s.buttonsWrapper}`}>

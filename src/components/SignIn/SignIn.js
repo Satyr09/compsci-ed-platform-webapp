@@ -1,245 +1,234 @@
-import React,{Component} from 'react';
-import {BrowserRouter,Switch,Route,NavLink} from 'react-router-dom';
+import React, { Component, useState, useContext, useEffect } from 'react';
+import { BrowserRouter, Switch, Route, NavLink, Redirect } from 'react-router-dom';
 import SignUp from '../SignUp/SignUp';
+import { AuthContext } from '../../App';
 
-class SignIn extends Component{
-	state={
-		email:"",
-		password:"",
-		designation:"",
-		emailErr:"",
-		passwordErr:"",
-		designationErr:""
-	}
-	inputHandler=(event)=>{
-        const target=event.target;
-        const name=target.name;
-        const value=target.value;
-        this.setState({
-            [name]:value
-        });
-    }
-    validate=()=>{
-    	let emailErr="";
-        let passwordErr="";
-        let designationErr="";
+const SignIn = (props) => {
+    //static authData = AuthContext;
 
-        const regex={
-        	email:new RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$'),
-            password:new RegExp('^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9]{8,}$')
+    // componentDidMount(){
+    //     const authData = this.context
+    //     console.log(authData)
+    // }
+
+    const authData = useContext(AuthContext)
+
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [designation, setDesignation] = useState("");
+    const [emailErr, setEmailErr] = useState("");
+    const [passwordErr, setPasswordErr] = useState("");
+    const [designationErr, setDesignationErr] = useState("");
+
+  
+    const validate = () => {
+        let emailErr = "";
+        let passwordErr = "";
+        let designationErr = "";
+
+        const regex = {
+            email: new RegExp('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$'),
+            //password:new RegExp('^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9]{8,}$')
         };
 
-        if(!(this.state.email!=="" && regex.email.test(this.state.email))){
-            emailErr="Enter your email in the form character@character.domain";
+        if (!(email !== "" && regex.email.test(email))) {
+            emailErr = "Enter your email in the form character@character.domain";
         }
 
-        this.setState({
-            emailErr:emailErr
-        });
+        setEmailErr(emailErr)
 
 
-        if(!(this.state.password!=="" && regex.password.test(this.state.password))){
-            passwordErr="Enter your password as stated ";
+        if (!(password !== "")) {
+            passwordErr = "Enter your password as stated ";
         }
 
+        setPasswordErr(passwordErr)
 
-        this.setState({
-            passwordErr:passwordErr
-        });
 
-        if(this.state.designation!=="Teacher" && this.state.designation!=="Student"){
-            designationErr="Please choose one of the options";
+        if (designation !== "Teacher" && designation !== "Student") {
+            designationErr = "Please choose one of the options";
         }
 
 
-        this.setState({
-            designationErr:designationErr
-        });
+        setDesignationErr(designationErr)
 
-        if(!emailErr && !passwordErr && !designationErr){
-        	return true;
-        }else{
-        	return false;
+        if (!emailErr && !passwordErr && !designationErr) {
+            return true;
+        } else {
+            return false;
         }
 
     }
-    submitHandler=(event)=>{
+    const submitHandler = (event) => {
         event.preventDefault();
-        if(!this.validate()){
-        	return;
+        if (!validate()) {
+            return;
         }
         //console.log(this.state);
 
         /*const obj={
-        	email:this.state.email,
-        	password:this.state.password
+        	email:email,
+        	password:password
         };*/
 
-        const email=this.state.email;
-        const password=this.state.password;
-
-        if(this.state.designation==="Student"){
-        	fetch("http://localhost:5000/student/signin", {
+        if (designation === "Student") {
+            fetch("http://localhost:5000/student/signin", {
                 method: "POST",
+                mode: "cors",
                 headers: {
-                    'Content-Type': 'application/json'
-                  },
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
                 body: JSON.stringify({
-                    email:email,
-                    password:password
+                    email: email,
+                    password: password
                 })
-                })
+            })
                 .then(res => res.json())
                 .then(data => {
-                    if(data.statusCode===404){ 
-                        this.setState({
-                            emailErr:data.message,
-                            passwordErr:""
-                        });
+
+                    if (data.statusCode === 404) {
+                        setEmailErr(data.message);
+                        setPasswordErr("");
                         //this.signupError="email_id already registered";
                         //console.log(this.signupError);
-                    }else if(data.statusCode===450){
-                        this.setState({
-                            emailErr:"",
-                            passwordErr:data.message
-                        });   
-                    }else if(data.statusCode===200){
-                        this.setState({
-                            emailErr:"",
-                            passwordErr:""
-                        }); 
-                        console.log(data.message);
+                    } else if (data.statusCode === 450) {
+                        setEmailErr(data.message);
+                        setPasswordErr("");
+
+                    } else {
+                        setEmailErr("");
+                        setPasswordErr("");
+                        props.loginHandler(data);
                     }
                 })
                 .catch(err => console.error(err));
-        }else if(this.state.designation==="Teacher"){
-        	fetch("http://localhost:5000/tutor/signin", {
+        } else if (designation === "Teacher") {
+            fetch("http://localhost:5000/tutor/signin", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
-                  },
+                },
                 body: JSON.stringify({
-                    email:email,
-                    password:password
+                    email: email,
+                    password: password
                 })
-                })
+            })
                 .then(res => res.json())
                 .then(data => {
-                    if(data.statusCode===404){ 
-                        this.setState({
-                            emailErr:data.message,
-                            passwordErr:""
-                        });
+                    if (data.statusCode === 404) {
+                        setEmailErr(data.message);
+                        setPasswordErr("");
                         //this.signupError="email_id already registered";
                         //console.log(this.signupError);
-                    }else if(data.statusCode===450){
-                        this.setState({
-                            emailErr:"",
-                            passwordErr:data.message
-                        });   
-                    }else if(data.statusCode===200){
-                        this.setState({
-                            emailErr:"",
-                            passwordErr:""
-                        }); 
-                        console.log(data.message);
+                    } else if (data.statusCode === 450) {
+                        setEmailErr(data.message);
+                        setPasswordErr("");
+                    } else if (data.statusCode === 200) {
+                        setEmailErr("");
+                        setPasswordErr("");
                     }
                 })
                 .catch(err => console.error(err));
         }
 
     }
-	render(){
-		const style={
-			"border":"1px solid black",
-			"margin":"2% 20%",
-			"padding":"5%",
-			"textAlign":"center",
-			"boxSizing":"border-box",
-			"backgroundColor":"lightgrey"
-		};
-		const passStyle={
-            "fontSize":"12px"
-        };
-		const invalidStyle={
-            "border":"2px solid gold",
-            "color":"red",
-            "fontWeight":"bold"
-        };
-		return (
-			<div>
-				<form style={style}>
-		                <h3>Sign In</h3>
 
-		                <div className="form-group">
-		                    <label >Email address</label>
-		                    <input type="email" 
-		                    className="form-control" 
-		                    name="email"
-		                    placeholder="Enter email"
-		                    value={this.state.email}		  
-                        	onChange={this.inputHandler} />
-		                </div>
+    const style = {
+        "border": "1px solid black",
+        "margin": "2% 20%",
+        "padding": "5%",
+        "textAlign": "center",
+        "boxSizing": "border-box",
+        "backgroundColor": "lightgrey"
+    };
+    const passStyle = {
+        "fontSize": "12px"
+    };
+    const invalidStyle = {
+        "border": "2px solid gold",
+        "color": "red",
+        "fontWeight": "bold"
+    };
+    return (
+        // authData && authData.accessToken? <Redirect to = "/dashboard"/>
+        // :
+        authData && authData.accessToken && !authData.isLoading?<Redirect to="/dashboard"/>
+        :authData.isLoading?<div/>:
+        <div>
+            <form style={style}>
+                <h3>Sign In</h3>
 
-		                <div style={invalidStyle}>{this.state.emailErr}</div>
+                <div className="form-group">
+                    <label >Email address</label>
+                    <input type="email"
+                        className="form-control"
+                        name="email"
+                        placeholder="Enter email"
+                        value={email}
+                        onChange={e=>setEmail(e.target.value)} />
+                </div>
 
-		                <div className="form-group">
-		                    <label >Password</label>
-		                    <input type="password" 
-		                    className="form-control" 
-		                    name="password"
-		                    placeholder="Enter password" 
-		                    value={this.state.password}
-                        	onChange={this.inputHandler}/>
-		                </div>
+                <div style={invalidStyle}>{emailErr}</div>
 
-		                <p className="forgot-password text-right" style={passStyle}>
-                        	*Password must contain Minimum eight characters, at least one letter and one number
+                <div className="form-group">
+                    <label >Password</label>
+                    <input type="password"
+                        className="form-control"
+                        name="password"
+                        placeholder="Enter password"
+                        value={password}
+                        onChange={e=>setPassword(e.target.value)} />
+                </div>
+
+                <p className="forgot-password text-right" style={passStyle}>
+                    *Password must contain Minimum eight characters, at least one letter and one number
                     	</p>
 
-		                <div style={invalidStyle}>{this.state.passwordErr}</div>
+                <div style={invalidStyle}>{passwordErr}</div>
 
-		                <p>Enter your designation</p>
-	                    <div className="radio">
-	                        <input type="radio" 
-	                        name="designation" 
-	                        value="Teacher" 
-	                        onClick={this.inputHandler}
-	                        />
-	                        <label>Teacher</label>
-	                        <br/>
-	                        <input 
-	                        type="radio" 
-	                        name="designation" 
-	                        value="Student" 
-	                        onClick={this.inputHandler}
-	                        />
-	                        <label>Student</label>
-	                    </div>
+                <p>Enter your designation</p>
+                <div className="radio">
+                    <input type="radio"
+                        name="designation"
+                        value="Teacher"
+                        onClick={e=>setDesignation("Teacher")}
+                    />
+                    <label>Teacher</label>
+                    <br />
+                    <input
+                        type="radio"
+                        name="designation"
+                        value="Student"
+                        onClick={e=>setDesignation("Student")}
+                    />
+                    <label>Student</label>
+                </div>
 
-	                    <div style={invalidStyle}>{this.state.designationErr}</div>
+                <div style={invalidStyle}>{designationErr}</div>
 
-		                <button type="submit" className="btn btn-primary" onClick={this.submitHandler}>Submit</button>
+                <button type="submit" className="btn btn-primary" onClick={submitHandler}>Submit</button>
 
-		                <p className="forgot-password text-right">
-	                        Don't have an account? 
+                <p className="forgot-password text-right">
+                    Don't have an account?
 	                        <NavLink className='nav-NavLink' to='/signup'>Sign Up </NavLink>
-	                    </p>
-		                
-		                
-		        </form>
-		        <BrowserRouter>
-                    <div className="auth-wrapper">
-                        <div className="auth-inner">
-                            <Switch>
-                                <Route path='/signup' component={SignUp} />
-                            </Switch>
-                        </div>
+                </p>
+
+
+            </form>
+                <div className="auth-wrapper">
+                    <div className="auth-inner">
+                        <Switch>
+                            <Route path='/signup' component={SignUp} />
+                        </Switch>
                     </div>
-                </BrowserRouter>
-	        </div>
-		);
-	}
+                </div>
+         
+        </div>
+    );
 }
+
 
 export default SignIn;

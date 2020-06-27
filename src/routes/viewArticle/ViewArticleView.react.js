@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Editor from "../../components/Editor";
 import s from "./ViewArticleView.module.css";
 import { articles } from "../../testArticles";
@@ -9,11 +9,12 @@ import { withRouter } from "react-router-dom";
 import sampleMarkdownText from "../../testArticles/sampleMarkDown.md";
 import queryString from "query-string";
 import draftToHtml from "draftjs-to-html";
+import { AuthContext } from "../../App";
 
 const ViewArticleView = props => {
-  const onSubmit = async () => {
-    console.log(codeValue);
+  const authData = useContext(AuthContext);
 
+  const onSubmit = async () => {
     try {
       console.log("Posting code");
       const response = await fetch("http://localhost:5000/compile", {
@@ -47,18 +48,30 @@ const ViewArticleView = props => {
 
   React.useEffect(() => {
     const qParams = queryString.parse(props.location.search);
-    fetch(`http://localhost:5000/article/${qParams.id}`)
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        setArticle(data);
-        document.getElementById("articleContent").innerHTML = draftToHtml(
-          article.content,
-        );
+    if (authData && authData.accessToken) {
+      fetch(`http://localhost:5000/article/${qParams.id}`, {
+        method: "GET",
+        withCredentials: true,
+        mode: "cors",
+        credentials: "include",
+        headers: {
+          "Authorization": `JWT ${authData.accessToken}`
+        }
       })
-      .catch(err => console.error(err));
-  }, [article.content, article.markdown, props.location.search]);
+        .then(res => res.json())
+        .then(data => {
+          setArticle(data);        
+        })
+        .catch(err => console.error(err));
+    }
+  },[]);
 
+  useEffect(()=>{
+    if(article && article.content)
+      document.getElementById("articleContent").innerHTML = draftToHtml(
+        article.content,
+      );
+  },[article])
   return (
     <Card bodyStyle={{ padding: "25px" }} style={{ borderRadius: "5px" }}>
       <div className={s.pageWrapper}>
