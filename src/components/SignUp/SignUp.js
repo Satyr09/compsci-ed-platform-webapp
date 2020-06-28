@@ -228,6 +228,8 @@ class SignUp extends Component{
                             emailErr:""
                         });
                         console.log(data.message);
+                        alert('Successfully Registered');
+                        this.props.history.push('/signin');
                     }
                 })
                 .catch(err => console.error(err));
@@ -262,7 +264,8 @@ class SignUp extends Component{
                             emailErr:""
                         });
                         console.log(data.message);
-                        
+                        alert('Successfully Registered');
+                        this.props.history.push('/signin');
                     }
                 })
                 .catch(err => console.error(err));
@@ -284,7 +287,7 @@ class SignUp extends Component{
             "fontSize":"12px"
         };
         const invalidStyle={
-            "border":"2px solid gold",
+            "border":"2px solid red",
             "color":"red",
             "fontWeight":"bold"
         };
@@ -302,7 +305,7 @@ class SignUp extends Component{
                             onChange={this.inputHandler}/>
                         </div>
 
-                        <div style={invalidStyle}>{this.state.universityErr}</div>
+                        {this.state.universityErr!=="" ? (<div style={invalidStyle}>{this.state.universityErr}</div>) : null}
                         
                         <div className="form-group">
                             <label>Qualifications</label>
@@ -314,7 +317,7 @@ class SignUp extends Component{
                             onChange={this.inputHandler}/>
                         </div>
 
-                        <div style={invalidStyle}>{this.state.qualificationErr}</div>
+                        {this.state.qualificationErr!=="" ? (<div style={invalidStyle}>{this.state.qualificationErr}</div>) : null}
                         
                     </div>
                 );
@@ -331,7 +334,7 @@ class SignUp extends Component{
                             onChange={this.inputHandler}/>
                         </div>
 
-                        <div style={invalidStyle}>{this.state.universityErr}</div>
+                        {this.state.universityErr!=="" ? (<div style={invalidStyle}>{this.state.universityErr}</div>) : null}
                         
                         <div className="form-group">
                             <label>Year of Graduation</label>
@@ -343,7 +346,7 @@ class SignUp extends Component{
                             onChange={this.inputHandler}/>
                         </div>
 
-                        <div style={invalidStyle}>{this.state.yearErr}</div>
+                        {this.state.yearErr!=="" ? (<div style={invalidStyle}>{this.state.yearErr}</div>) : null}
                         
                     </div>
                 );
@@ -364,7 +367,7 @@ class SignUp extends Component{
                         onChange={this.inputHandler}/>
                     </div>
 
-                        <div style={invalidStyle}>{this.state.firstNameErr}</div>
+                        {this.state.firstNameErr!=="" ? (<div style={invalidStyle}>{this.state.firstNameErr}</div>) : null}
 
                     <div className="form-group">
                         <label>Last name</label>
@@ -376,7 +379,7 @@ class SignUp extends Component{
                         onChange={this.inputHandler}/>
                     </div>
 
-                    <div style={invalidStyle}>{this.state.lastNameErr}</div>
+                    {this.state.lastNameErr!=="" ? (<div style={invalidStyle}>{this.state.lastNameErr}</div>) : null}
 
                     <div className="form-group">
                         <label>Email address</label>
@@ -388,7 +391,7 @@ class SignUp extends Component{
                         onChange={this.inputHandler}/>
                     </div>
 
-                    <div style={invalidStyle}>{this.state.emailErr}</div>
+                    {this.state.emailErr!=="" ? (<div style={invalidStyle}>{this.state.emailErr}</div>) : null}
 
                     <div className="form-group">
                         <label>Password</label>
@@ -404,7 +407,7 @@ class SignUp extends Component{
                         *Password must contain Minimum eight characters, at least one letter and one number
                     </p>
 
-                    <div style={invalidStyle}>{this.state.passwordErr}</div>
+                    {this.state.passwordErr!=="" ? (<div style={invalidStyle}>{this.state.passwordErr}</div>) : null}
 
                     <div className="form-group">
                         <label>Re-Enter Password</label>
@@ -416,7 +419,7 @@ class SignUp extends Component{
                         onChange={this.inputHandler}/>
                     </div>
 
-                    <div style={invalidStyle}>{this.state.rePasswordErr}</div>
+                    {this.state.rePasswordErr!=="" ? (<div style={invalidStyle}>{this.state.rePasswordErr}</div>) : null}
 
                     <p>Enter your designation</p>
                     <div className="radio">
@@ -436,7 +439,7 @@ class SignUp extends Component{
                         <label>Student</label>
                     </div>
 
-                    <div style={invalidStyle}>{this.state.designationErr}</div>
+                    {this.state.designationErr!=="" ? (<div style={invalidStyle}>{this.state.designationErr}</div>) : null}
 
                     {extraInfo}
 

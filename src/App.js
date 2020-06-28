@@ -10,6 +10,7 @@ import SignIn from "./components/SignIn/SignIn";
 import SignUp from "./components/SignUp/SignUp"
 import SideBar from "./SideBar";
 import ProtectedRoute from "./ProtectedRoute"
+import Header from './Containers/Header';
 
 
 import topic from "./pages/topic";
@@ -28,17 +29,23 @@ function App() {
 
   const history = useHistory();
 
+  const [user,setUser] = React.useState("");
 
   const loginHandler = (data) => {
     console.log("Setting", data);
     setAuthData({ accessToken: data.accessToken, user: data.user });
+    window.location.reload(true);
   }
   function getCookie(name) {
     var cookies = '; ' + document.cookie;
     var splitCookie = cookies.split('; ' + name + '=');
     if (splitCookie.length == 2) return splitCookie.pop();
   }
-
+  function deleteCookie(name) {
+    console.log("Hello");
+    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    window.location.reload(true);
+};
   useEffect(() => {
     if (getCookie("refreshToken")) {
       if (!authData || !authData.accessToken) {
@@ -58,6 +65,7 @@ function App() {
               setAuthData({
                 accessToken: data.accessToken, user: data.user, isLoading: false
               })
+              setUser(data.user.firstName);
             }
           })
           .catch(e => {
@@ -83,6 +91,8 @@ function App() {
               minHeight: 280,
             }}
           >
+            {console.log(authData)}
+            <Header userData={user} logoutHandler={deleteCookie}/>
             <Router>
               <Switch>
                 <ProtectedRoute path="/edit" component={EditArticleView} />

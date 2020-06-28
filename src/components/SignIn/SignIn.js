@@ -95,8 +95,8 @@ const SignIn = (props) => {
                         //this.signupError="email_id already registered";
                         //console.log(this.signupError);
                     } else if (data.statusCode === 450) {
-                        setEmailErr(data.message);
-                        setPasswordErr("");
+                        setPasswordErr(data.message);
+                        setEmailErr("");
 
                     } else {
                         setEmailErr("");
@@ -148,7 +148,7 @@ const SignIn = (props) => {
         "fontSize": "12px"
     };
     const invalidStyle = {
-        "border": "2px solid gold",
+        "border": "2px solid red",
         "color": "red",
         "fontWeight": "bold"
     };
@@ -171,7 +171,7 @@ const SignIn = (props) => {
                         onChange={e=>setEmail(e.target.value)} />
                 </div>
 
-                <div style={invalidStyle}>{emailErr}</div>
+                {emailErr!=="" ? (<div style={invalidStyle}>{emailErr}</div>) : null}
 
                 <div className="form-group">
                     <label >Password</label>
@@ -187,7 +187,7 @@ const SignIn = (props) => {
                     *Password must contain Minimum eight characters, at least one letter and one number
                     	</p>
 
-                <div style={invalidStyle}>{passwordErr}</div>
+                {passwordErr!=="" ? (<div style={invalidStyle}>{passwordErr}</div>) : null}
 
                 <p>Enter your designation</p>
                 <div className="radio">
@@ -207,7 +207,7 @@ const SignIn = (props) => {
                     <label>Student</label>
                 </div>
 
-                <div style={invalidStyle}>{designationErr}</div>
+                {designationErr!=="" ? (<div style={invalidStyle}>{designationErr}</div>) : null}
 
                 <button type="submit" className="btn btn-primary" onClick={submitHandler}>Submit</button>
 
