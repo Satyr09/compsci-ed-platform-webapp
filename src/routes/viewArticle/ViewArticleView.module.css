@@ -69,3 +69,57 @@
   font-size: 14px;
   color: rgb(156, 156, 156);
 }
+.header {
+  width: 100%;
+  /* text-align: center; */
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 180%;
+  /* identical to box height, or 58px */
+
+  color: #000000;
+  letter-spacing: 0.01em;
+}
+.smallHeader{
+  width: 100%;
+  /* text-align: center; */
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 180%;
+  /* identical to box height, or 58px */
+
+  color: #000000;
+  letter-spacing: 0.01em;
+}
+.smallerHeader{
+  width: 100%;
+  /* text-align: center; */
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 180%;
+  /* identical to box height, or 58px */
+
+  color: #000000;
+  letter-spacing: 0.01em;
+}
+.paraStyle{
+  width: 100%;
+  /* text-align: center; */
+  font-size: 12px;
+  font-weight: normal;
+}
+.subHeader {
+  width: 100%;
+  /* text-align: center; */
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 28px;
+  /* or 175% */
+
+  /* text-align: center; */
+
+  /* Dark Grey */
+
+  color: #717b8a;
+  margin: -7px 0 55px 0;
+}

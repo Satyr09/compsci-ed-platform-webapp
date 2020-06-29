@@ -14,3 +14,13 @@ body {
   border: none !important;
   border-bottom: 1px solid #9f9f9f;
 }
+.ant-divider-horizontal.ant-divider-with-text-center::before, .ant-divider-horizontal.ant-divider-with-text-left::before, .ant-divider-horizontal.ant-divider-with-text-right::before, .ant-divider-horizontal.ant-divider-with-text-center::after, .ant-divider-horizontal.ant-divider-with-text-left::after, .ant-divider-horizontal.ant-divider-with-text-right::after{
+  border-top: 1px solid rgb(0,0,0,0.35) !important;
+}
+.inputFieldWrapper > .ant-input{
+  border: none !important;
+  border-bottom: 1px solid #9f9f9f;
+}
+.bodyCard  .ant-tabs-nav-wrap{
+  text-align: center !important;
+}

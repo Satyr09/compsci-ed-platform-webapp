@@ -14,6 +14,8 @@ import ProtectedRoute from "./ProtectedRoute"
 
 import topic from "./pages/topic";
 import Dashboard from "./routes/dashboard";
+import MyStudyPlans from "./routes/mystudyplans";
+import StudyPlan from "./routes/studyplan";
 import "antd/dist/antd.css";
 import { Menu, Layout } from "antd";
 import Leaderboard from './components/Leaderboard/Leaderboard';
@@ -73,7 +75,7 @@ function App() {
   return (
     <AuthContext.Provider value={authData}>
       <Layout style={{ minHeight: "100vh" }}>
-        <SideBar />
+        {authData && authData.user && <SideBar />}
         <Layout style={{ padding: "0 24px 24px" }}>
           <Content
             className={` ${s.appWrapper} site-layout-background`}
@@ -92,6 +94,8 @@ function App() {
                 <ProtectedRoute exact path="/new_topic" component={NewTopic} />
                 <ProtectedRoute path="/leaderboard" component={Leaderboard} />
                 <ProtectedRoute path='/contest' component={Contest} />
+                <ProtectedRoute path="/mystudyplans" component={MyStudyPlans}/>
+                <ProtectedRoute path="/studyplan" component = {StudyPlan} />
 
                 <Route exact path="/topic" component={topic} />
                 <Route path='/signin' render={(props) => <SignIn loginHandler={loginHandler} {...props} />} />
