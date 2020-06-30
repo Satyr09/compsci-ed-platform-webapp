@@ -10,6 +10,8 @@ import avatar3 from "../../avatars/avatar3.png";
 import avatar4 from "../../avatars/avatar4.png";
 import avatar5 from "../../avatars/avatar5.png";
 import avatar6 from "../../avatars/avatar6.png";
+import articleIcon from "../../images/article.svg"
+
 import { withRouter } from "react-router-dom";
 import { AuthContext } from "../../App";
 
@@ -33,12 +35,12 @@ const DashboardView = props => {
   React.useEffect(() => {
     if (authData && authData.accessToken) {
       fetch("http://localhost:5000/article/", {
-        method:"GET",
+        method: "GET",
         withCredentials: true,
-        mode:"cors",
-        credentials:"include",
+        mode: "cors",
+        credentials: "include",
         headers: {
-            "Authorization": `JWT ${authData.accessToken}`
+          "Authorization": `JWT ${authData.accessToken}`
         },
       })
         .then(res => res.json())
@@ -81,9 +83,12 @@ const DashboardView = props => {
   return (
     <React.Fragment>
       <Card bodyStyle={{ padding: 15 }} className={s.bodyCard}>
+        <div style={{ position: "absolute", top: "-100px", left: "-50px" }}>
+          <img style={{ height: "250px", width: "250px" }} src={articleIcon} />
+        </div>
         <div className={s.header}>Articles </div>
         <div className={s.subHeader}>
-          {authData && authData.user &&  authData.user.firstName}, browse a curated catalogue of technical articles
+          {authData && authData.user && authData.user.firstName}, browse a curated catalogue of technical articles
         </div>
         <Divider />
         <div className={`dashboardButtonsWrapper ${s.buttonsWrapper}`}>
@@ -173,20 +178,20 @@ const DashboardView = props => {
                         {post.author || "Cormen Stein"}
                       </div>
 
-                      {post.tags && post.tags.length? <span style={{ fontWeight: 500 }}>Topics : </span>:null}
+                      {post.tags && post.tags.length ? <span style={{ fontWeight: 500 }}>Topics : </span> : null}
                       <span>
                         {
                           post.tags && post.tags.map(
                             tag => {
                               return (
                                 <span className={s.tagSpan}>
-                                {tag}
-                              </span>
+                                  {tag}
+                                </span>
                               )
                             }
                           )
                         }
-                       
+
                       </span>
                     </Col>
 

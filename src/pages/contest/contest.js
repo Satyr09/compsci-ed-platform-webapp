@@ -2,6 +2,10 @@ import React, { useMemo } from 'react';
 import { withRouter, NavLink, Link } from "react-router-dom";
 import c from "./Contest.module.css";
 import { Row, Col, Card, Tag, Breadcrumb, Tabs, Button } from 'antd';
+import codechefIcon from "../../images/codechef.jpeg";
+import codeforcesIcon from "../../images/codeforces2.png";
+import topcoderIcon from "../../images/topcoder.png";
+import hackerearthIcon from "../../images/hackerearth2.jpg";
 
 //start: con.start.split("T")[0],
 //end: con.end.split("T")[0],
@@ -293,17 +297,17 @@ const Contest = props => {
         </div>
                 <br />
                 <Tabs centered={true} size={"large"} defaultActiveKey="2" onChange={siteSeclect}>
-                    <TabPane tab="Codechef" key="2">
+                    <TabPane tab={<><span> <img style={{height:"25px",width:"25px"}} src={codechefIcon}/></span> <span>Codechef</span></>}  key="2">
                         {rows}
                     </TabPane>
-                    <TabPane tab="Codeforces" key="1">
+                    <TabPane tab={<><span> <img style={{height:"25px",width:"25px"}} src={codeforcesIcon}/></span> <span>Codeforces</span></>}  key="1">
                         {rows}
                     </TabPane>
-                    <TabPane tab="Hackerearth" key="73">
+                    <TabPane tab={<><span> <img style={{height:"25px",width:"25px"}} src={hackerearthIcon}/></span> <span>Hackerearth</span></>} key="73">
                         {rows}
                     </TabPane>
 
-                    <TabPane tab="TopCoder" key="12">
+                    <TabPane tab={<><span> <img style={{height:"25px",width:"25px"}} src={topcoderIcon}/></span> <span>TopCoder</span></>}  key="12">
                         {rows}
                     </TabPane>
                 </Tabs>

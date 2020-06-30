@@ -4,6 +4,7 @@ import groupBy from 'lodash/groupBy';
 import { AuthContext } from '../../App';
 import { Table, Card } from 'antd';
 import { CrownOutlined } from '@ant-design/icons';
+import winnerIcon from "../../images/winner.svg";
 
 const Leaderboard = (props) => {
 	const authData = useContext(AuthContext);
@@ -54,25 +55,25 @@ const Leaderboard = (props) => {
 	useEffect(() => {
 		//const qParams=queryString.parse(this.location.search);
 		let x = null;
-		if(!article)
-		fetch("http://localhost:5000/article", {
-			mode: "cors",
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-				"Authorization": `JWT ${authData.accessToken}`
-			},
-			credentials: 'include',
-		})
-			.then(res => res.json())
-			.then(data => {
-				console.log(data);
-				x = data;
-				setArticles(x);
+		if (!article)
+			fetch("http://localhost:5000/article", {
+				mode: "cors",
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+					"Authorization": `JWT ${authData.accessToken}`
+				},
+				credentials: 'include',
 			})
-			.catch(err => console.error(err));
+				.then(res => res.json())
+				.then(data => {
+					console.log(data);
+					x = data;
+					setArticles(x);
+				})
+				.catch(err => console.error(err));
 
-	},[article])
+	}, [article])
 	useEffect(() => {
 		if (article) {
 			printTable();
@@ -110,9 +111,12 @@ const Leaderboard = (props) => {
 	//this.renderTable();
 	//console.log(this.state.rows);
 	return (
-		<Card>
+		<Card style={{width:"75vw", margin:"45px auto"}}>
+			<div style={{ position: "absolute", top: "-100px", left: "-50px" }}>
+				<img style={{ height: "300px", width: "300px" }} src={winnerIcon} />
+			</div>
 			<div className={s.header} style={{ textAlign: "center" }}>Creator Leaderboard</div>
-        <div className={s.subHeader} style={{ textAlign: "center" }}>See how the best and brightest of our creators are performing!.</div>
+			<div className={s.subHeader} style={{ textAlign: "center" }}>See how the best and brightest of our creators are performing!.</div>
 			{/* <table className={classes.Table}>
 					<tbody>
 						<tr className={classes.Tr}>
@@ -127,7 +131,7 @@ const Leaderboard = (props) => {
 				</table> */}
 
 			<Table
-				style={{width:"75%", margin:"0 auto"}}
+				style={{ width: "75%", margin: "0 auto" }}
 				columns={columns}
 				dataSource={rows}
 			/>

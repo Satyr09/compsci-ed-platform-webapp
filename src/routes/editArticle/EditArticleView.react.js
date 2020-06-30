@@ -5,6 +5,7 @@ import { Card, Button, Input, Divider, Select } from "antd";
 import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Typography } from "antd";
 import draftToHtml from "draftjs-to-html";
+import writeIcon from "../../images/write.svg";
 
 import { convertFromRaw } from "draft-js";
 
@@ -56,8 +57,6 @@ const EditArticleView = props => {
     setTitle(e.target.value);
   };
   const handleTagChange = e => {
-    // if(!e.target.value)return;
-    // const tags = e.target.value.split(",");
     setTags(tags);
   }
   const { Option } = Select;
@@ -67,6 +66,9 @@ const EditArticleView = props => {
 
   return (
     <Card className={s.wrapper} bodyStyle={{ padding: 45 }}>
+       <div style={{ position: "absolute", top: "-100px", left: "-50px" }}>
+          <img style={{ height: "250px", width: "250px" }} src={writeIcon} />
+        </div>
       <div className={s.cardHeader}>Create or edit articles</div>
       <div className={s.cardSubHeader}>
         Use this editor to crate your new masterpiece.It will be visible to the

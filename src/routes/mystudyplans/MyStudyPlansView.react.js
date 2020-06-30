@@ -5,6 +5,7 @@ import { Typography } from "antd";
 import { AuthContext } from "../../App";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import Modal from "antd/lib/modal/Modal";
+import groupStudyIcon from "../../images/group_study_2.svg";
 
 
 const { Title } = Typography;
@@ -89,7 +90,10 @@ const MyStudyPlanView = props => {
     return (
         studyPlans && studyPlans.length ?
             <>
-                <Card>
+                <Card style={{width:"75vw",margin:"45px auto"}}>
+                    <div style={{position:"absolute", top:"-100px", left:"-50px"}}>
+                        <img style={{height:"360px", width:"360px"}} src={groupStudyIcon}/>
+                    </div>
                     <div className={s.header}>Your Study Plans</div>
                     <div className={s.subHeader}>Find all study plans that you created or were added to.</div>
                     <br />
