@@ -173,7 +173,7 @@ const DashboardView = props => {
                         {post.author || "Cormen Stein"}
                       </div>
 
-                      {post.tags && <span style={{ fontWeight: 500 }}>Topics : </span>}
+                      {post.tags && post.tags.length? <span style={{ fontWeight: 500 }}>Topics : </span>:null}
                       <span>
                         {
                           post.tags && post.tags.map(
