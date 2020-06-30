@@ -1,134 +1,125 @@
-import React, { Component } from 'react';
+import React, { Component,useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Popconfirm, Alert, Button } from 'antd';
+import { Popconfirm, Alert, Button, Form, Input, Card, Divider } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import { AuthContext } from "../App";
+import s from "./ForumDashboard.module.css";
+import writeIcon from "../images/write.svg";
 
-class NewTopic extends Component {
-
-    state = {
-        redirect: false,
-        formRef : React.createRef(),
-        topicErr:"",
-        contentErr:"",
-    }
-
-    constructor(props) {
-        super(props);
-        this.topicElRef = React.createRef();
-        this.contentElRef = React.createRef();
-    }
+const { TextArea } = Input;
+const NewTopic = (props) => {
     
+    const authData = useContext(AuthContext);
 
-    topicHandler = (props) => {
-        props.preventDefault();
-        const topic = this.topicElRef.current.value;
-        const content = this.contentElRef.current.value;
-        
-        let topicErr="";
-        let contentErr="";
-        if(topic.trim().length === 0 ){
-            topicErr = <Alert message="The Above field cannot be left empty" type="warning" closable showIcon />;
+    const [title, setTitle] = useState("");
+    const [context, setContext] = useState("");
+    const [titleErr, setTitileErr] = useState("");
+    const [contextErr, setContextErr] = useState("");
+
+    const validate = () => {
+        let titleErr = "";
+        let contextErr = "";
+
+        if(!(title !== "")) {
+            titleErr = <Alert message="The Above field cannot be left empty" type="warning" closable showIcon />;
         }
 
-        if(content.trim().length === 0 ){
-            contentErr = <Alert message="The Above field cannot be left empty" type="warning" closable showIcon />;
+        setTitileErr(titleErr)
+
+        if(context === "") {
+            contextErr = <Alert message="The Above field cannot be left empty" type="warning" closable showIcon />;
         }
 
-        if(content.trim().length === 0 && topic.trim().length === 0 ){
-            topicErr = <Alert message="The Above field cannot be left empty" type="warning" closable showIcon />;
-            contentErr = <Alert message="The Above field cannot be left empty" type="warning" closable showIcon />;
+        setContextErr(contextErr)
+
+        if(!titleErr && !contextErr) {
+            return true;
+        }else {
+            return false;
         }
+    }
 
-        this.setState({
-            topicErr,
-            contentErr
-        })
-
-
-        if(this.state.Err){
+    const submitHandler = (event) => {
+        event.preventDefault();
+        if(!validate()) {
             return;
         }
         
-        const events = {topic, content};
-        console.log(events);
-        
-        fetch("http://localhost:5000/topics", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-          },
-        body: JSON.stringify({
-            title: topic,
-            content,
-            author: "Jackson",
-        })
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data);
-        })
-        .catch(err => console.error(err));
-        
+        console.log({title, context});
+        if (authData && authData.accessToken) {
+            fetch("http://localhost:5000/topics", {
+                method: "POST",
+                withCredentials: true,
+                mode:"cors",
+                credentials:"include",
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `JWT ${authData.accessToken}`
+                },
+                body: JSON.stringify({
+                    title,
+                    content: context,
+                    author: authData.user.firstName,
+                })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(err => console.error(err));
+            
+        }
     };
 
-    onConfirm= () => {
-        if(this.state.contentErr || this.state.topicErr){
+    const onConfirm= () => {
+        if(titleErr || contextErr){
             return;
         }
         window.location.assign("/forum");
     }
 
-
-    render() {
-
-        return (
-            <div>
-                <nav className="navbar navbar-dark bg-dark">
-                <div className="container">
-                    <h1><Link to="/forum" className="navbar-brand">Forums</Link></h1>
-                    <form className="form-inline">
-                        <input type="text" className="form-control mr-3" placeholder="Search" />
-                        <button type="submit" className="btn btn-primary">Search</button>
-                    </form>
+    return (
+        <React.Fragment>
+            <Card bodyStyle={{ padding: 15 }} className={s.bodyCard}>
+            <div style={{ position: "absolute", top: "-100px", left: "-50px" }}>
+            <img style={{ height: "250px", width: "250px" }} src={writeIcon} />
+            </div>
+                <div className={s.header}>Forum </div>
+                <div className={s.subHeader}>
+                    Welcome,{authData && authData.user &&  authData.user.firstName}
                 </div>
-            </nav>
+                <Divider />
             <div className="container my-3">
-                <nav className="breadcrumb">
+                {/*<nav className="breadcrumb">
                     <Link to="/forum" className="breadcrumb-item text-secondary">Board index</Link>
                     <span className="breadcrumb-item active">Create new topic</span>
-                </nav>
+                </nav>*/}
                 <div className="row">
                     <div className="col-12">
-                        <h2 className="h4 text-white bg-secondary mb-3 p-4 rounded">Create new topic</h2>
+                        <h2 className="h4 text-white bg-info mb-3 p-4 rounded">Create new topic</h2>
                     </div>
+                    {/*<Demo />*/}
                 </div>
-                    <form className="mb-3">
-                        <div className="form-group">
-                            <label htmlFor="topic">Topic</label>
-                            <input type="text" className="form-control" id="topic" ref={this.topicElRef} placeholder="Give your topic a title." required />
-                            <div>{this.state.topicErr}</div>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="content">Content:</label>
-                            <textarea className="form-control" id="content" rows="10" placeholder="Write your content here." ref={this.contentElRef} required />
-                            <div>{this.state.contentErr}</div>
-                        </div>
-                        <div className="form-check">
-                            <label className="form-check-label">
-                                <input type="checkbox" className="form-check-input" id="checkbox" value="notification" />
-                                Notify me on repllies.
-                            </label>
-                        </div>
-                        
-                        <Popconfirm title="Are you sure？" icon={<QuestionCircleOutlined style={{ color: 'red' }} />} onConfirm={this.onConfirm}>
-                        <Button type="submit" className="btn btn-primary" onClick={this.topicHandler} >Reply</Button>
-                        </Popconfirm>
-                    </form>
+                <Form>
+                    <label htmlFor="topic">Topic</label>
+                    <TextArea row={2} onChange={e=>setTitle(e.target.value)} placeholder="Give your topic a title." allowClear/>
+                    {titleErr}
+                    <br/>
+                    <br/>
+                    <label htmlFor="content">Content:</label>
+                    <TextArea rows={10} onChange={e=>setContext(e.target.value)} placeholder="Write your content here." allowClear/>
+                    {contextErr}
+                    <br/><br/>
+                    <Popconfirm title="Are you sure？" icon={<QuestionCircleOutlined style={{ color: 'red' }} />} onConfirm={onConfirm}>
+                    <Button type="submit" className="btn btn-primary" onClick={submitHandler} >Reply</Button>
+                    </Popconfirm>
                     
-                </div>
+                </Form>
             </div>
-        );
-    }
+            </Card>
+            
+        </React.Fragment>
+    )
 }
 
 export default NewTopic;
