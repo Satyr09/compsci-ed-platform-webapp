@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import s from "./ForumDashboard.module.css";
-import { Row, Col, Card, Tag, Select, Pagination, Avatar } from "antd";
+import { Row, Col, Card, Tag, Select, Pagination, Avatar, Divider, Input, Breadcrumb } from "antd";
 import { UserOutlined } from '@ant-design/icons';
 import "../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { withRouter, NavLink } from "react-router-dom";
-
+import { AuthContext } from "../App";
+import BreadcrumbItem from "antd/lib/breadcrumb/BreadcrumbItem";
+import articleIcon from "../images/article.svg"
 
 const tags = [
   <Tag color="green">Genral</Tag>,
@@ -19,25 +21,37 @@ const tags = [
 const ForumDashboard = props => {
   const [posts, setPosts] = React.useState();
 
+  const authData = useContext(AuthContext);
+
   React.useEffect(() => {
     console.log("FETCHING");
-    fetch("http://localhost:5000/topics")
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        setPosts(
-          data
-            .map(post => {
-              return {
-                ...post,
-                ratings: (Math.random() * (5 - 1) + 1).toFixed(1),
-                date: post.date.split("T")[0],
-              };
-            })
-            .sort((a, b) => b.ratings.localeCompare(a.ratings)),
-        );
+    if (authData && authData.accessToken) {
+      fetch("http://localhost:5000/topics", {
+        method:"GET",
+        withCredentials: true,
+        mode:"cors",
+        credentials:"include",
+        headers: {
+            "Authorization": `JWT ${authData.accessToken}`
+        },
       })
-      .catch(err => console.error(err));
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          setPosts(
+            data
+              .map(post => {
+                return {
+                  ...post,
+                  ratings: (Math.random() * (5 - 1) + 1).toFixed(1),
+                  date: post.date.split("T")[0],
+                };
+              })
+              .sort((a, b) => b.date.localeCompare(a.date)),
+          );
+        })
+        .catch(err => console.error(err));
+    }
   }, []);
 
   const [filterText, setFilterText] = React.useState();
@@ -64,22 +78,39 @@ const ForumDashboard = props => {
   const { Option } = Select;
   return (
     <React.Fragment>
-      <nav className="navbar navbar-dark bg-dark">
-        <div className="container">
-          <h1><NavLink to="/forum" className="navbar-brand">Forums</NavLink></h1>
-          <form className="form-inline">
-            <input type="text" className="form-control mr-3" placeholder="Search"  value={filterText || ""} onChange={e => handleFilter(e)} /> 
-            <button type="submit" className="btn btn-primary">Search</button>
-          </form>
-        </div>
-      </nav>
       <div className="container my-3">
-        <nav className="breadcrumb">
-          <span className="breadcrumb-item active">Board index</span>
-        </nav>
       <div className="row">
-      <div className="col-12 col-xl-9">
+      <div className="col-12 col-xl">
         <Card bodyStyle={{ padding: 15 }} className={s.bodyCard}>
+          <div style={{ position: "absolute", top: "-100px", left: "-50px" }}>
+            <img style={{ height: "250px", width: "250px" }} src={articleIcon} />
+          </div>
+          <div className={s.header}>Forum </div>
+          <div className={s.subHeader}>
+            Welcome,{authData && authData.user &&  authData.user.firstName}
+          </div>
+          <Breadcrumb>
+          <BreadcrumbItem>Board Index</BreadcrumbItem>
+          </Breadcrumb>
+          {/*<nav className="breadcrumb">
+          <span className="breadcrumb-item active">Board index</span>
+          </nav>*/}
+          <Divider />
+          <div className={`dashboardButtonsWrapper ${s.buttonsWrapper}`}>
+            <Row>
+              <Col sm={{ span: 10, offset: 0 }} xs={{ span: 24, offset: 0 }}>
+                <div className={s.filterInput}>
+                  <Input
+                    className={s.filterInput}
+                    placeholder="Filter by artice title..."
+                    value={filterText || ""}
+                    onChange={e => handleFilter(e)}
+                    style={{ border: "none !important" }}
+                  />
+                </div>
+              </Col>
+            </Row>
+          </div>
           {posts &&
             posts
               .filter(post =>
@@ -168,31 +199,9 @@ const ForumDashboard = props => {
               <Pagination current={Current} onChange={onChange} total={50} />
             </nav>
         </div>        
-        <br/>        
+        <br/><br/>        
         <NavLink to="/new_topic" className="btn btn-lg btn-primary">New topic</NavLink>
-        </div>
-
-        <div className="col-12 col-xl-3">
-          <aside>
-            <div className="row">
-              <div className="col-12 col-sm-6 col-xl-12">
-                <Card  className="card" title="Member online" style={{ width: 300 }}>
-                  <p><a href="#0">Forum member name</a></p>
-                  <p><a href="#0">Forum member name</a></p>
-                  <p><a href="#0">Forum member name</a></p>
-                  <p><a href="#0">Forum member name</a></p>
-                </Card>
-              </div>
-              <div className="col-12 col-sm-6 col-xl-12">
-                <Card  className="card" title="Forum stastistics" style={{ width: 300 }}>
-                  <p>Total forums: 10</p>
-                  <p>Total Topics: 7</p>
-                  <p>Total Topics: 3</p>
-                </Card>
-              </div>
-            </div>
-          </aside>
-          </div>            
+        </div>         
         </div>
       </div>
     </React.Fragment>
