@@ -85,65 +85,6 @@ const SignIn = (props) => {
                     setPasswordErr("");
                     props.loginHandler(data);
                 }
-                .then(res => res.json())
-                .then(data => {
-
-                    if (data.statusCode === 404) {
-                        setEmailErr(data.message);
-                        setPasswordErr("");
-                        //this.signupError="email_id already registered";
-                        //console.log(this.signupError);
-                    } else if (data.statusCode === 450) {
-                        setEmailErr(data.message);
-                        setPasswordErr("");
-
-                    } else {
-                        setEmailErr("");
-                        setPasswordErr("");
-                        props.loginHandler(data);
-                    }
-                })
-                .catch(err => console.error(err));
-        } else if (designation === "Teacher") {
-            fetch("http://localhost:5000/tutor/signin", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: email,
-                    password: password
-                })
-
-                .then(res => res.json())
-                .then(data => {
-
-                    if (data.statusCode === 404) {
-                        setEmailErr(data.message);
-                        setPasswordErr("");
-                        //this.signupError="email_id already registered";
-                        //console.log(this.signupError);
-                    } else if (data.statusCode === 450) {
-                        setPasswordErr(data.message);
-                        setEmailErr("");
-
-                    } else {
-                        setEmailErr("");
-                        setPasswordErr("");
-                        props.loginHandler(data);
-                    }
-                })
-                .catch(err => console.error(err));
-        } else if (designation === "Teacher") {
-            fetch("http://localhost:5000/tutor/signin", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: email,
-                    password: password
-                })
             })
             .catch(err => console.error(err));
 
@@ -162,7 +103,7 @@ const SignIn = (props) => {
         "fontSize": "12px"
     };
     const invalidStyle = {
-        "border": "2px solid red",
+        "border": "2px solid gold",
         "color": "red",
         "fontWeight": "bold"
     };
@@ -199,114 +140,9 @@ const SignIn = (props) => {
 
                         <p className="forgot-password text-right" style={passStyle}>
                             *Password must contain Minimum eight characters, at least one letter and one number
-        authData && authData.accessToken && !authData.isLoading?<Redirect to="/dashboard"/>
-        :authData.isLoading?<div/>:
-        <div>
-            <form style={style}>
-                <h3>Sign In</h3>
-
-                <div className="form-group">
-                    <label >Email address</label>
-                    <input type="email"
-                        className="form-control"
-                        name="email"
-                        placeholder="Enter email"
-                        value={email}
-                        onChange={e=>setEmail(e.target.value)} />
-                </div>
-
-                <div style={invalidStyle}>{emailErr}</div>
-
-                <div className="form-group">
-                    <label >Password</label>
-                    <input type="password"
-                        className="form-control"
-                        name="password"
-                        placeholder="Enter password"
-                        value={password}
-                        onChange={e=>setPassword(e.target.value)} />
-                </div>
-
-                <p className="forgot-password text-right" style={passStyle}>
-                    *Password must contain Minimum eight characters, at least one letter and one number
-        authData && authData.accessToken && !authData.isLoading?<Redirect to="/dashboard"/>
-        :authData.isLoading?<div/>:
-        <div>
-            <form style={style}>
-                <h3>Sign In</h3>
-
-                <div className="form-group">
-                    <label >Email address</label>
-                    <input type="email"
-                        className="form-control"
-                        name="email"
-                        placeholder="Enter email"
-                        value={email}
-                        onChange={e=>setEmail(e.target.value)} />
-                </div>
-
-                {emailErr!=="" ? (<div style={invalidStyle}>{emailErr}</div>) : null}
-
-                <div className="form-group">
-                    <label >Password</label>
-                    <input type="password"
-                        className="form-control"
-                        name="password"
-                        placeholder="Enter password"
-                        value={password}
-                        onChange={e=>setPassword(e.target.value)} />
-                </div>
-
-                <p className="forgot-password text-right" style={passStyle}>
-                    *Password must contain Minimum eight characters, at least one letter and one number
                     	</p>
 
-
                         <div style={invalidStyle}>{passwordErr}</div>
-
-                <div style={invalidStyle}>{passwordErr}</div>
-
-                <p>Enter your designation</p>
-                <div className="radio">
-                    <input type="radio"
-                        name="designation"
-                        value="Teacher"
-                        onClick={e=>setDesignation("Teacher")}
-                    />
-                    <label>Teacher</label>
-                    <br />
-                    <input
-                        type="radio"
-                        name="designation"
-                        value="Student"
-                        onClick={e=>setDesignation("Student")}
-                    />
-                    <label>Student</label>
-                </div>
-
-                {passwordErr!=="" ? (<div style={invalidStyle}>{passwordErr}</div>) : null}
-
-                <p>Enter your designation</p>
-                <div className="radio">
-                    <input type="radio"
-                        name="designation"
-                        value="Teacher"
-                        onClick={e=>setDesignation("Teacher")}
-                    />
-                    <label>Teacher</label>
-                    <br />
-                    <input
-                        type="radio"
-                        name="designation"
-                        value="Student"
-                        onClick={e=>setDesignation("Student")}
-                    />
-                    <label>Student</label>
-                </div>
-
-                <div style={invalidStyle}>{designationErr}</div>
-
-                {designationErr!=="" ? (<div style={invalidStyle}>{designationErr}</div>) : null}
 
 
                         <button type="submit" className="btn btn-primary" onClick={submitHandler}>Submit</button>
