@@ -10,7 +10,7 @@ import SignIn from "./components/SignIn/SignIn";
 import SignUp from "./components/SignUp/SignUp"
 import SideBar from "./SideBar";
 import ProtectedRoute from "./ProtectedRoute";
-import Header from './Containers/Header';
+// import Header from './Containers/Header';
 
 
 import topic from "./pages/topic";
@@ -18,8 +18,9 @@ import Dashboard from "./routes/dashboard";
 import MyStudyPlans from "./routes/mystudyplans";
 import StudyPlan from "./routes/studyplan";
 import "antd/dist/antd.css";
-import { Menu, Layout } from "antd";
+import { Menu, Layout, Dropdown } from "antd";
 import Leaderboard from './components/Leaderboard/Leaderboard';
+import { DownOutlined, LogoutOutlined } from "@ant-design/icons";
 
 const { Content, Sider } = Layout;
 
@@ -31,7 +32,7 @@ function App() {
 
   const history = useHistory();
 
-  const [user,setUser] = React.useState("");
+  const [user, setUser] = React.useState("");
 
   const loginHandler = (data) => {
     console.log("Setting", data);
@@ -74,26 +75,58 @@ function App() {
             setAuthData({ isLoading: false })
           })
       }
-    }else{
-      setAuthData({...authData,isLoading:false})
+    } else {
+      setAuthData({ ...authData, isLoading: false })
     }
   }, [])
-
+  const menu = (
+    <Menu>
+      <Menu.Item>
+        <div onClick={e=>deleteCookie("refreshToken")}>
+          Logout <LogoutOutlined/>
+        </div>
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <AuthContext.Provider value={authData}>
       <Layout style={{ minHeight: "100vh" }}>
-        {authData && authData.user && <SideBar />}
-        <Layout style={{ padding: "0 24px 24px" }}>
+        <Layout.Header className={`site-layout-sub-header-background ${s.navbar}`} style={{ padding: 0, background: "white",
+      "-webkit-box-shadow": "0px 2px 16px -2px rgba(122,113,122,1)",
+      "-moz-box-shadow": "0px 2px 16px -2px rgba(122,113,122,1)",
+      "box-shadow":" 0px 2px 16px -2px rgba(122,113,122,1)" }}>
+          <div className="logo" />
+          <Menu mode="horizontal" defaultSelectedKeys={['2']} style={{ float: "right" }}>
+            <Menu.Item key="2">
+              {authData && authData.accessToken ? <Dropdown overlay={menu}>
+                <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                  {`Welcome, ${authData.user.firstName}`} <DownOutlined />
+                </a>
+              </Dropdown> : 
+              <div  onClick={e => window.location="/signin"}>
+               <a className="ant-dropdown-link" >
+               Welcome, Sign In!
+              </a>
+              </div>
+             
+              }
+            </Menu.Item>
+          </Menu>
+        </Layout.Header>
+
+        <Layout style={{ padding: "0px" }}>
+          {/* <Header userData={user} logoutHandler={deleteCookie}/> */}
+          {authData && authData.user && <SideBar />}
           <Content
             className={` ${s.appWrapper} site-layout-background`}
             style={{
-              padding: 24,
+              padding: "24px 48px",
               margin: 0,
               minHeight: 280,
             }}
           >
-            <Header userData={user} logoutHandler={deleteCookie}/>
+
             <Router>
               <Switch>
                 <ProtectedRoute path="/edit" component={EditArticleView} />
@@ -103,8 +136,8 @@ function App() {
                 <ProtectedRoute exact path="/new_topic" component={NewTopic} />
                 <ProtectedRoute path="/leaderboard" component={Leaderboard} />
                 <ProtectedRoute path='/contest' component={Contest} />
-                <ProtectedRoute path="/mystudyplans" component={MyStudyPlans}/>
-                <ProtectedRoute path="/studyplan" component = {StudyPlan} />
+                <ProtectedRoute path="/mystudyplans" component={MyStudyPlans} />
+                <ProtectedRoute path="/studyplan" component={StudyPlan} />
 
                 <Route exact path="/topic" component={topic} />
                 <Route path='/signin' render={(props) => <SignIn loginHandler={loginHandler} {...props} />} />

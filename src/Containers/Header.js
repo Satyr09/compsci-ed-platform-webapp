@@ -3,7 +3,7 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { FaAngleDown } from 'react-icons/fa';
 import { FiUser } from 'react-icons/fi';
 import { Menu, Dropdown } from 'antd';
-import {BsDot} from 'react-icons/bs';
+//import {BsDot} from 'react-icons/bs';
 
 class Header extends React.Component {
     state={
@@ -25,7 +25,7 @@ class Header extends React.Component {
       );
     render(){
         return (
-            <div>
+            <div style={{position:"absolute", width:"100%", top:"0",zIndex:"9999"}}>
                 <nav className="navbar navbar-expand-lg bg-info navbar-dark indigo"> 
                 <ul className='navbar-nav ml-auto'>
                     {this.props.userData!== "" ?

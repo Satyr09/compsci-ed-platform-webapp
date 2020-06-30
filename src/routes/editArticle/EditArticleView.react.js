@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import s from "./EditArticle.module.css";
 import { Card, Button, Input, Divider, Select } from "antd";
@@ -8,10 +8,13 @@ import draftToHtml from "draftjs-to-html";
 import writeIcon from "../../images/write.svg";
 
 import { convertFromRaw } from "draft-js";
+import { AuthContext } from "../../App";
 
 const { Title } = Typography;
 
 const EditArticleView = props => {
+
+  const authData = useContext(AuthContext);
   const fakeContent = {
     entityMap: {},
     blocks: [
@@ -35,15 +38,22 @@ const EditArticleView = props => {
     console.log("POSTING.....");
     fetch("http://localhost:5000/article", {
       method: "POST",
+      mode: "cors",
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          "Authorization": `JWT ${authData.accessToken}`
+      },
+      credentials: 'include',
       body: JSON.stringify({
         title,
         content: contentState,
-        author: "Lambda Phi",
+        author: authData.user.firstName+" "+authData.user.lastName,
+        tags
       }),
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         window.location.reload();
       })
       .catch(err => console.error(err));
@@ -57,7 +67,7 @@ const EditArticleView = props => {
     setTitle(e.target.value);
   };
   const handleTagChange = e => {
-    setTags(tags);
+    setTags(e);
   }
   const { Option } = Select;
   React.useEffect(() => {
@@ -91,21 +101,22 @@ const EditArticleView = props => {
       <Select
         mode="multiple"
         placeholder="Add tags (optional)"
-        defaultValue={[]}
+        defaultValue={null}
+        value={tags || []}
         style={{ width: "100%",margin:"30px auto" }}
         onChange={handleTagChange}
       >
-        <Option value="dynamicProgramming">Dynamic Programming</Option>
-        <Option value="dfs">DFS</Option>
-        <Option value="bfs" >
+        <Option value="Dynamic Programming">Dynamic Programming</Option>
+        <Option value="DFS">DFS</Option>
+        <Option value="BFS" >
           BFS
       </Option>
-        <Option value="linkedList">Linked List</Option>
-        <Option value="stack">Stack</Option>
-        <Option value="queue">Queue</Option>
-        <Option value="binarySearch">Binary Search</Option>
-        <Option value="dsa">Data Structures And Algorithms</Option>
-        <Option value="development">Development</Option>
+        <Option value="Linked List">Linked List</Option>
+        <Option value="Stack">Stack</Option>
+        <Option value="Queue">Queue</Option>
+        <Option value="Binary Search">Binary Search</Option>
+        <Option value="Data Structures And Algorithms">Data Structures And Algorithms</Option>
+        <Option value="Development">Development</Option>
 
       </Select>
       <Button

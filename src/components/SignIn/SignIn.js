@@ -2,8 +2,10 @@ import React, { Component, useState, useContext, useEffect } from 'react';
 import { BrowserRouter, Switch, Route, NavLink, Redirect } from 'react-router-dom';
 import SignUp from '../SignUp/SignUp';
 import { AuthContext } from '../../App';
-import { Card,Input,Button } from 'antd';
+import { Card, Input, Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import s from "./SignIn.module.css";
+import codeIcon from "../../images/code_3.svg";
 
 const SignIn = (props) => {
     //static authData = AuthContext;
@@ -94,18 +96,16 @@ const SignIn = (props) => {
     }
 
     const style = {
-        "border": "1px solid black",
-        "margin": "2% 20%",
+        "margin": "2% auto",
         "padding": "5%",
         "textAlign": "center",
         "boxSizing": "border-box",
-        "maxWidth": "65%",
+        "maxWidth": "35%",
     };
     const passStyle = {
         "fontSize": "12px"
     };
     const invalidStyle = {
-        "border": "2px solid red",
         "color": "red",
         "fontWeight": "bold"
     };
@@ -115,43 +115,48 @@ const SignIn = (props) => {
         authData && authData.accessToken && !authData.isLoading ? <Redirect to="/dashboard" />
             : authData.isLoading ? <div /> :
                 <div>
-                    <Card style={style}>
-                        <h3>Sign In</h3>
+                    <Card hoverable style={style}>
+                    <div style={{position:"absolute", top:"-100px", right:"-85px"}}>
+                        <img style={{height:"300px", width:"300px"}} src={codeIcon}/>
+                    </div>
+                        <div className={s.header}>Welcome Back</div>
+                        <div className={s.subHeader}>Sign in to resume where you left off.</div><br />
 
-                        <p>
-                        <label >Email address</label>
-                        <Input placeholder="Enter email" name="email"
-                            prefix={<UserOutlined />} 
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}/>
+                        <p className={`dummy ${s.dummy}`}>
+                            <label >Email address</label>
+                            <Input placeholder="Enter email" name="email"
+                                prefix={<UserOutlined />}
+                                value={email}
+                                onChange={e => setEmail(e.target.value)} />
                         </p>
-                        
-                      
-                        {emailErr!=="" ? (<div style={invalidStyle}>{emailErr}</div>) : null}
 
-                        <p>
-                        <label >Password</label>
-                        <Input.Password placeholder="Enter password" 
-                            name="password"
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}/>
+
+                        {emailErr !== "" ? (<div style={invalidStyle}>{emailErr}</div>) : null}
+
+                        <p className={`dummy ${s.dummy}`}>
+                            <label >Password</label>
+                            <Input.Password placeholder="Enter password"
+                                name="password"
+                                value={password}
+                                onChange={e => setPassword(e.target.value)} />
                         </p>
-                        
+
 
 
                         <p className="forgot-password text-right" style={passStyle}>
                             *Password must contain Minimum eight characters, at least one letter and one number
                     	</p>
 
-                        {passwordErr!=="" ? (<div style={invalidStyle}>{passwordErr}</div>) : null}
+                        {passwordErr !== "" ? (<div style={invalidStyle}>{passwordErr}</div>) : null}
 
-                        
-                        <Button type="primary" htmlType="submit" onClick={submitHandler}>Sign In</Button>
 
-                        <p className="forgot-password text-right">
+                        <Button type="primary" htmlType="submit" style={{ width: "250px", height: "45px" }} onClick={submitHandler}>Sign In</Button>
+                        <br />
+                        <br />
+                        <div className="forgot-password text-center">
                             Don't have an account?
-	                        <NavLink className='nav-NavLink' to='/signup'>Sign Up </NavLink>
-                        </p>
+	                        <NavLink className='nav-NavLink' to='/signup'>&nbsp;Sign Up </NavLink>
+                        </div>
 
 
                     </Card>
