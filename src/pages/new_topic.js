@@ -106,7 +106,7 @@ const NewTopic = (props) => {
                     {contextErr}
                     <br/><br/>
                     <Popconfirm title="Are you sure？" icon={<QuestionCircleOutlined style={{ color: 'red' }} />} onConfirm={onConfirm}>
-                    <Button type="submit" className="btn btn-primary" onClick={submitHandler} >Reply</Button>
+                    <Button type="submit" className="btn btn-primary" onClick={submitHandler} >Post</Button>
                     </Popconfirm>
                     
                 </Form>
