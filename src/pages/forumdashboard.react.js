@@ -174,7 +174,7 @@ const ForumDashboard = props => {
                       >
                         <div className={s.metaDataWrapper}>
                           <div className={s.ratingsWrapper}>
-                            <span className={s.ratingsText}>{post.comm.length}</span>
+                            <span className={s.ratingsText}>{post.comm.length} Replies</span>
                           </div>
                         </div>
                       </Col>
