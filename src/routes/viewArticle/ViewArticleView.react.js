@@ -128,6 +128,18 @@ const ViewArticleView = props => {
       .then(res => res.json())
       .then(data => handleOpenFeedbackModal());
   }
+  const [videoPlayerURL, setVideoPlayerURL] = useState("");
+  const [isOpenPlayerModal, setIsOpenPlayerModal] = useState(false);
+  const handleOpenPlayerModal = (url) => {
+    console.log("Here",url)
+    setVideoPlayerURL(url);
+  }
+  useEffect(() => {
+    if (videoPlayerURL) {
+      console.log("Should open...")
+      setIsOpenPlayerModal(!isOpenPlayerModal);
+    }
+  }, [videoPlayerURL])
   const { TextArea } = Input;
 
   return (
@@ -190,7 +202,7 @@ const ViewArticleView = props => {
       </Modal>
 
 
-      <Card style={{ margin: "35px auto"}}>
+      <Card style={{ margin: "35px auto" }}>
         <div className={s.header} style={{ textAlign: "center" }}>Related Videos</div>
         <div className={s.subHeader} style={{ textAlign: "center" }}>Browse some popular youtube videos relevant to this topic.</div>
         <br />
@@ -199,7 +211,8 @@ const ViewArticleView = props => {
             {
               youtubeContent && youtubeContent.map(video => {
                 return (
-                  <Card hoverable style={{ width: "320px", margin: "10px 15px" , padding: "0px", height:"415px" }} bodyStyle={{padding:"0px"}}>
+                  <Card hoverable style={{ width: "320px", margin: "10px 15px", padding: "0px", height: "415px" }} bodyStyle={{ padding: "0px" }}
+                    onClick={e => handleOpenPlayerModal(video.videoID)}>
                     <div>
                       <img src={video.thumbnails.medium.url} />
                     </div>
@@ -212,7 +225,7 @@ const ViewArticleView = props => {
                       <div className={s.paraStyle} style={{ fontWeight: "bold", fontSize: "12px" }}>
                         {video.channelTitle} &nbsp; at {new Date(video.publishedAt).toLocaleString()}
                       </div>
-                      <div className={s.paraStyle} style={{wordBreak:"break-all"}}>
+                      <div className={s.paraStyle} style={{ wordBreak: "break-all" }}>
                         {video.description}
                       </div>
 
@@ -229,6 +242,25 @@ const ViewArticleView = props => {
         }
 
       </Card>
+      <Modal
+        centered={true}
+        visible={isOpenPlayerModal}
+        onCancel={handleOpenPlayerModal}
+        width={1280}
+        destroyOnClose={true}
+        footer={null}
+        closable={false}
+        style={{textAlign:"center",width:1280,height:720}}
+        bodyStyle={{padding:"0px",width:1280,height:720,}}
+      >
+        {/* <div className={s.subHeader}>
+          Watch popular youtube tutorials
+        </div> */}
+
+        <iframe id="ytplayer" type="text/html" width="1280" height="720"
+          src={`https://www.youtube.com/embed/${videoPlayerURL}?autoplay=1&mute=1`}
+          frameborder="0"></iframe>
+      </Modal>
     </>
   );
 };

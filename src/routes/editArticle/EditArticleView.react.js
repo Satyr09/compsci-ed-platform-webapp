@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
 import s from "./EditArticle.module.css";
-import { Card, Button, Input, Divider } from "antd";
+import { Card, Button, Input, Divider, Select } from "antd";
 import "../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Typography } from "antd";
 import draftToHtml from "draftjs-to-html";
@@ -28,6 +28,7 @@ const EditArticleView = props => {
 
   const [contentState, setContentState] = React.useState();
   const [title, setTitle] = React.useState();
+  const [tags, setTags] = useState(null);
 
   const handleArticleSubmit = e => {
     console.log("POSTING.....");
@@ -54,7 +55,12 @@ const EditArticleView = props => {
   const handleTitleChange = e => {
     setTitle(e.target.value);
   };
-
+  const handleTagChange = e => {
+    // if(!e.target.value)return;
+    // const tags = e.target.value.split(",");
+    setTags(tags);
+  }
+  const { Option } = Select;
   React.useEffect(() => {
     console.log("whoosh");
   }, []);
@@ -80,7 +86,26 @@ const EditArticleView = props => {
         onContentStateChange={contentStateChangeHandler}
         defaultContentState={fakeContent}
       />
+      <Select
+        mode="multiple"
+        placeholder="Add tags (optional)"
+        defaultValue={[]}
+        style={{ width: "100%",margin:"30px auto" }}
+        onChange={handleTagChange}
+      >
+        <Option value="dynamicProgramming">Dynamic Programming</Option>
+        <Option value="dfs">DFS</Option>
+        <Option value="bfs" >
+          BFS
+      </Option>
+        <Option value="linkedList">Linked List</Option>
+        <Option value="stack">Stack</Option>
+        <Option value="queue">Queue</Option>
+        <Option value="binarySearch">Binary Search</Option>
+        <Option value="dsa">Data Structures And Algorithms</Option>
+        <Option value="development">Development</Option>
 
+      </Select>
       <Button
         style={{ float: "right", marginTop: "20px" }}
         size="large"

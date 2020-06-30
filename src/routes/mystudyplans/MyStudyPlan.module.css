@@ -48,3 +48,26 @@
     box-shadow: none !important;
     border-bottom: 1px solid #2079f6 !important;
   }
+  
+.inputFieldWrapper{
+  margin:20px 0px;
+}
+.inputLabel{
+  font-size: 14px;
+  color: #717b8a;
+  margin-bottom: 7.5px;;
+
+}
+.newItemInput > input {
+  border: none !important;
+  border-bottom: 1px solid #cecece !important;
+}
+.newItemInput > input:hover {
+  border: none !important;
+  border-bottom: 1px solid #2079f6 !important;
+}
+.newItemInput > input:focus {
+  border: none !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid #2079f6 !important;
+}
