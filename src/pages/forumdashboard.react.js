@@ -47,7 +47,7 @@ const ForumDashboard = props => {
                   date: post.date.split("T")[0],
                 };
               })
-              .sort((a, b) => b.ratings.localeCompare(a.ratings)),
+              .sort((a, b) => b.date.localeCompare(a.date)),
           );
         })
         .catch(err => console.error(err));
