@@ -99,7 +99,6 @@ const SignIn = (props) => {
         "padding": "5%",
         "textAlign": "center",
         "boxSizing": "border-box",
-        "backgroundColor": "rgb(248,248,248)",
         "maxWidth": "65%",
     };
     const passStyle = {
