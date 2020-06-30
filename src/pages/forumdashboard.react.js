@@ -81,13 +81,13 @@ const ForumDashboard = props => {
       <div className="container my-3">
       <div className="row">
       <div className="col-12 col-xl">
-        <Card bodyStyle={{ padding: 15 }} className={s.bodyCard}>
+        <Card bodyStyle={{ padding: 15 }} style={{width:"75vw"}} style={{ margin:"45px auto"}} className={s.bodyCard}>
           <div style={{ position: "absolute", top: "-100px", left: "-50px" }}>
             <img style={{ height: "250px", width: "250px" }} src={articleIcon} />
           </div>
           <div className={s.header}>Forum </div>
           <div className={s.subHeader}>
-            Welcome,{authData && authData.user &&  authData.user.firstName}
+            Welcome,{authData && authData.user &&  authData.user.firstName}, use this forum to talk to and learn from the community!
           </div>
           <Breadcrumb>
           <BreadcrumbItem>Board Index</BreadcrumbItem>

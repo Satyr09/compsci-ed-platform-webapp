@@ -80,7 +80,7 @@ const NewTopic = (props) => {
 
     return (
         <React.Fragment>
-            <Card bodyStyle={{ padding: 15 }} className={s.bodyCard}>
+            <Card bodyStyle={{ padding: 15 }} style={{width:"75vw"}} style={{ margin:"45px auto"}} className={s.bodyCard}>
             <div style={{ position: "absolute", top: "-100px", left: "-50px" }}>
             <img style={{ height: "250px", width: "250px" }} src={writeIcon} />
             </div>
@@ -94,12 +94,7 @@ const NewTopic = (props) => {
                     <Link to="/forum" className="breadcrumb-item text-secondary">Board index</Link>
                     <span className="breadcrumb-item active">Create new topic</span>
                 </nav>*/}
-                <div className="row">
-                    <div className="col-12">
-                        <h2 className="h4 text-white bg-info mb-3 p-4 rounded">Create new topic</h2>
-                    </div>
-                    {/*<Demo />*/}
-                </div>
+                <div className={s.header} style={{textAlign:"left"}}>Create a new topic</div>
                 <Form>
                     <label htmlFor="topic">Topic</label>
                     <TextArea row={2} onChange={e=>setTitle(e.target.value)} placeholder="Give your topic a title." allowClear/>

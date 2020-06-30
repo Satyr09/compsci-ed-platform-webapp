@@ -112,7 +112,7 @@ const Forumtopic = props => {
                     <Link to="/forum" className="breadcrumb-item text-secondary">Board index</Link>
                     <span className="breadcrumb-item active">{Topic.title}</span>
                 </nav>*/}
-                <Card bodyStyle={{ padding: 15 }} className={s.bodyCard}>
+                <Card bodyStyle={{ padding: 15 }} style={{width:"75vw"}} style={{ margin:"45px auto"}} className={s.bodyCard}>
                     <div className={s.header}>Forum </div>
                     <div className={s.subHeader}>
                         Welcome,{authData && authData.user &&  authData.user.firstName}
