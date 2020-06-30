@@ -9,6 +9,7 @@ import writeIcon from "../../images/write.svg";
 
 import { convertFromRaw } from "draft-js";
 import { AuthContext } from "../../App";
+import { Redirect } from "react-router-dom";
 
 const { Title } = Typography;
 
@@ -75,6 +76,8 @@ const EditArticleView = props => {
   }, []);
 
   return (
+    authData.user && authData.user.educatorStatus!=="approved" ?<Redirect to="/dashboard" />
+    :
     <Card className={s.wrapper} bodyStyle={{ padding: 45 }}>
        <div style={{ position: "absolute", top: "-100px", left: "-50px" }}>
           <img style={{ height: "250px", width: "250px" }} src={writeIcon} />
