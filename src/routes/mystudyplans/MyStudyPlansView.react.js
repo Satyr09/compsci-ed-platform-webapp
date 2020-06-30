@@ -6,7 +6,7 @@ import { AuthContext } from "../../App";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import Modal from "antd/lib/modal/Modal";
 import groupStudyIcon from "../../images/group_study_2.svg";
-
+import scrumIcom from "../../images/scrum.svg";
 
 const { Title } = Typography;
 
@@ -97,8 +97,11 @@ const MyStudyPlanView = props => {
                     <div className={s.header}>Your Study Plans</div>
                     <div className={s.subHeader}>Find all study plans that you created or were added to.</div>
                     <br />
-                    <div className={s.newItemInput} style={{ width: "30%", margin: "10px auto" }}>
+                    <div className={s.newItemInput} style={{ width: "30%", margin: "10px auto", display:"flex", justifyContent:"center", alignItems:"flex-start" }}>
+                       <span className={s.smallerHeader}>Search &nbsp;</span> 
+                        
                         <Input placeholder="Search for a study plan" onChange={hadnleSearchTextChange} value={searchText} />
+                          
                     </div>
                     <br />
                     <br />
@@ -111,7 +114,7 @@ const MyStudyPlanView = props => {
                                         return (
                                             <Card hoverable={true} style={{ width: "500px", height: "250px", margin: "15px" }}>
                                                 <Card.Meta
-                                                    avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                                                    avatar={<Avatar size="large" src={scrumIcom}/>}
                                                     title={<a href={`/studyplan?id=${item._id}`} target="_blank">{item.title}</a>}
                                                     description={
                                                         <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-start" }}>

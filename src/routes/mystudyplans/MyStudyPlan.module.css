@@ -22,7 +22,19 @@
     /* Dark Grey */
   
     color: #717b8a;
-    margin: -7px 0 55px 0;
+    margin: 2px 0 55px 0;
+  }
+  .smallerHeader{
+        font-size: 14px;
+    font-weight: normal;
+    line-height: 28px;
+    /* or 175% */
+    line-height: 36px;
+  
+  margin-right: 15px;
+    /* Dark Grey */
+  
+    color: #323335;
   }
   .smallerText{
     width: 100%;
