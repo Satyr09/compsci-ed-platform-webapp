@@ -2,6 +2,8 @@ import React, { Component, useState, useContext, useEffect } from 'react';
 import { BrowserRouter, Switch, Route, NavLink, Redirect } from 'react-router-dom';
 import SignUp from '../SignUp/SignUp';
 import { AuthContext } from '../../App';
+import { Card,Input,Button } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 
 const SignIn = (props) => {
     //static authData = AuthContext;
@@ -77,8 +79,8 @@ const SignIn = (props) => {
                     //this.signupError="email_id already registered";
                     //console.log(this.signupError);
                 } else if (data.statusCode === 450) {
-                    setEmailErr(data.message);
-                    setPasswordErr("");
+                    setPasswordErr(data.message);
+                    setEmailErr("");
 
                 } else {
                     setEmailErr("");
@@ -97,13 +99,13 @@ const SignIn = (props) => {
         "padding": "5%",
         "textAlign": "center",
         "boxSizing": "border-box",
-        "backgroundColor": "lightgrey"
+        "maxWidth": "65%",
     };
     const passStyle = {
         "fontSize": "12px"
     };
     const invalidStyle = {
-        "border": "2px solid gold",
+        "border": "2px solid red",
         "color": "red",
         "fontWeight": "bold"
     };
@@ -113,39 +115,38 @@ const SignIn = (props) => {
         authData && authData.accessToken && !authData.isLoading ? <Redirect to="/dashboard" />
             : authData.isLoading ? <div /> :
                 <div>
-                    <form style={style}>
+                    <Card style={style}>
                         <h3>Sign In</h3>
 
-                        <div className="form-group">
-                            <label >Email address</label>
-                            <input type="email"
-                                className="form-control"
-                                name="email"
-                                placeholder="Enter email"
-                                value={email}
-                                onChange={e => setEmail(e.target.value)} />
-                        </div>
+                        <p>
+                        <label >Email address</label>
+                        <Input placeholder="Enter email" name="email"
+                            prefix={<UserOutlined />} 
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}/>
+                        </p>
+                        
+                      
+                        {emailErr!=="" ? (<div style={invalidStyle}>{emailErr}</div>) : null}
 
-                        <div style={invalidStyle}>{emailErr}</div>
+                        <p>
+                        <label >Password</label>
+                        <Input.Password placeholder="Enter password" 
+                            name="password"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}/>
+                        </p>
+                        
 
-                        <div className="form-group">
-                            <label >Password</label>
-                            <input type="password"
-                                className="form-control"
-                                name="password"
-                                placeholder="Enter password"
-                                value={password}
-                                onChange={e => setPassword(e.target.value)} />
-                        </div>
 
                         <p className="forgot-password text-right" style={passStyle}>
                             *Password must contain Minimum eight characters, at least one letter and one number
                     	</p>
 
-                        <div style={invalidStyle}>{passwordErr}</div>
+                        {passwordErr!=="" ? (<div style={invalidStyle}>{passwordErr}</div>) : null}
 
-
-                        <button type="submit" className="btn btn-primary" onClick={submitHandler}>Submit</button>
+                        
+                        <Button type="primary" htmlType="submit" onClick={submitHandler}>Sign In</Button>
 
                         <p className="forgot-password text-right">
                             Don't have an account?
@@ -153,7 +154,7 @@ const SignIn = (props) => {
                         </p>
 
 
-                    </form>
+                    </Card>
                     <div className="auth-wrapper">
                         <div className="auth-inner">
                             <Switch>

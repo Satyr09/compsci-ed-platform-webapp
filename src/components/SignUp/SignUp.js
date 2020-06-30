@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 import {BrowserRouter,Switch,Route,NavLink,Redirect} from 'react-router-dom';
 import SignIn from '../SignIn/SignIn';
+import { Card,Input,Button,Checkbox,DatePicker } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 
 class SignUp extends Component{
 	state={
@@ -12,16 +14,14 @@ class SignUp extends Component{
 		designation:"",
         university:"",
         year:"",
-        qualification:"",
+        educatorStatus:"",
         firstNameErr:"",
         lastNameErr:"",
         emailErr:"",
         passwordErr:"",
         rePasswordErr:"",
-        designationErr:"",
         universityErr:"",
         yearErr:"",
-        qualificationErr:"",
 	};
     inputHandler=(event)=>{
         const target=event.target;
@@ -29,17 +29,6 @@ class SignUp extends Component{
         const value=target.value;
         const year="year";
         const qualification="qualification";
-        if(name==='designation'){
-            if(value==='Teacher'){
-                this.setState({
-                    [year]:""
-                });
-            }else{
-                this.setState({
-                    [qualification]:""
-                });
-            }
-        }
         this.setState({
             [name]:value
         });
@@ -51,10 +40,8 @@ class SignUp extends Component{
         let emailErr="";
         let passwordErr="";
         let rePasswordErr="";
-        let designationErr="";
         let universityErr="";
         let yearErr="";
-        let qualificationErr="";
 
         const regex={
             alphabet:new RegExp('[A-Za-z]+'),
@@ -113,35 +100,15 @@ class SignUp extends Component{
         });
 
 
-        if(this.state.designation!=="Teacher" && this.state.designation!=="Student"){
-            designationErr="Please choose one of the options";
+
+        if(!(this.state.university!=="" && regex.alphaSpace.test(this.state.university))){
+            universityErr="Enter your university correctly";
         }
 
-
-        this.setState({
-            designationErr:designationErr
-        });
-
-
-        if(this.state.designation==="Teacher"){
-
-            if(!(this.state.university!=="" && regex.alphaSpace.test(this.state.university))){
-                universityErr="Enter your university correctly";
-            }
-
-            if(!(this.state.qualification!=="" && regex.quali.test(this.state.qualification))){
-                qualificationErr="Enter your highest degree of qualification";
-            }
-        }else if(this.state.designation==="Student"){
-
-            if(!(this.state.university!=="" && regex.alphaSpace.test(this.state.university))){
-                universityErr="Enter your university correctly";
-            }
-
-            if(!(this.state.year!=="" && regex.year.test(this.state.year))){
-                yearErr="Enter the year of your graduation correctly";
-            }
+        if(!(this.state.year!=="" && regex.year.test(this.state.year))){
+            yearErr="Enter the year of your graduation correctly";
         }
+
 
 
         this.setState({
@@ -155,25 +122,8 @@ class SignUp extends Component{
         });
 
 
-
-        this.setState({
-            qualificationErr:qualificationErr
-        });
-
-        if(!firstNameErr && !lastNameErr && !emailErr && !passwordErr && !rePasswordErr && !designationErr){
-            if(this.state.designation==="Teacher"){
-                if(!universityErr && !qualificationErr){
-                    return true;
-                }else{
-                    return false;
-                }
-            }else if(this.state.designation==="Student"){
-                if(!universityErr && !yearErr){
-                    return true;
-                }else{
-                    return false;
-                }
-            }
+        if(!firstNameErr && !lastNameErr && !emailErr && !passwordErr && !rePasswordErr && !universityErr && !yearErr){
+            return true;
         }else{
             return false;
         }
@@ -185,7 +135,7 @@ class SignUp extends Component{
         if(!this.validate()){
             return;
         }
-        //console.log(this.state);
+        console.log(this.state);
 
         const obj={
             firstName:this.state.firstName,
@@ -194,11 +144,10 @@ class SignUp extends Component{
             password:this.state.password,
             designation:this.state.designation,
             university:this.state.university,
-            qualification:this.state.qualification,
-            year:this.state.year
+            year:this.state.year,
+            educatorStatus:this.state.educatorStatus,
         };
-        if(this.state.designation==="Student"){
-            fetch("http://localhost:5000/student/signup", {
+            fetch("http://localhost:5000/user/signup", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -208,12 +157,14 @@ class SignUp extends Component{
                     lastName:obj.lastName,
                     email:obj.email,
                     password:obj.password,
-                    designation:obj.designation,
+                    designation:"student",
                     university:obj.university,
                     qualification:obj.qualification,
-                    year:obj.year
+                    year:obj.year,
+                    educatorStatus:obj.educatorStatus,
+                    qualification:"B.E.",
                 })
-                })
+            })
                 .then(res => res.json())
                 .then(data => {
                     console.log(data);
@@ -228,226 +179,147 @@ class SignUp extends Component{
                             emailErr:""
                         });
                         console.log(data.message);
+                        alert('Successfully Registered');
+                        this.props.history.push('/signin');
                     }
                 })
                 .catch(err => console.error(err));
-        }else if(this.state.designation==="Teacher"){
-            fetch("http://localhost:5000/tutor/signup", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                  },
-                body: JSON.stringify({
-                    firstName:obj.firstName,
-                    lastName:obj.lastName,
-                    email:obj.email,
-                    password:obj.password,
-                    designation:obj.designation,
-                    university:obj.university,
-                    qualification:obj.qualification,
-                    year:obj.year
-                })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                    if(data.statusCode===800){ 
-                        this.setState({
-                            emailErr:data.message
-                        });
-                        //this.signupError="email_id already registered";
-                        //console.log(this.signupError);
-                    }else if(data.statusCode===220){
-                        this.setState({
-                            emailErr:""
-                        });
-                        console.log(data.message);
-                        
-                    }
-                })
-                .catch(err => console.error(err));
-        }
+        
             
         
         
     }
+    handleCheckboxChange(e) {
+        console.log(e.target.checked);
+        this.setState({
+            ...this.state,
+            educatorStatus: e.target.checked ? "pending" : "",
+        })
+      }
+    yearHandler=(date, dateString)=>{
+        console.log(dateString);
+        this.setState({
+            ...this.state,
+            year:dateString,
+        })
+    }
 	render(){
 		const style={
-			"border":"1px solid black",
-			"margin":"2% 20%",
-			"padding":"5%",
-			"textAlign":"center",
-			"boxSizing":"border-box",
-			"backgroundColor":"lightgrey"
+            "border": "1px solid black",
+            "margin": "2% 20%",
+            "padding": "5%",
+            "textAlign": "center",
+            "boxSizing": "border-box",
+            "maxWidth": "65%",
 		};
         const passStyle={
             "fontSize":"12px"
         };
         const invalidStyle={
-            "border":"2px solid gold",
+            "border":"2px solid red",
             "color":"red",
             "fontWeight":"bold"
         };
         let extraInfo=null;
-        if(this.state.designation==='Teacher'){
-            extraInfo=(
-                    <div>
-                        <div className="form-group">
-                            <label>University</label>
-                            <input type="text" 
-                            className="form-control" 
-                            name="university"
-                            placeholder="Enter the University you are teaching in" 
-                            value={this.state.university}
-                            onChange={this.inputHandler}/>
-                        </div>
-
-                        <div style={invalidStyle}>{this.state.universityErr}</div>
-                        
-                        <div className="form-group">
-                            <label>Qualifications</label>
-                            <input type="text" 
-                            className="form-control" 
-                            name="qualification"
-                            placeholder="Enter your highest degree of qualification" 
-                            value={this.state.qualification}
-                            onChange={this.inputHandler}/>
-                        </div>
-
-                        <div style={invalidStyle}>{this.state.qualificationErr}</div>
-                        
-                    </div>
-                );
-        }else if(this.state.designation==='Student'){
-            extraInfo=(
-                    <div>
-                        <div className="form-group">
-                            <label>University</label>
-                            <input type="text" 
-                            className="form-control" 
-                            name="university"
-                            placeholder="Enter the University you are studying in" 
-                            value={this.state.university}
-                            onChange={this.inputHandler}/>
-                        </div>
-
-                        <div style={invalidStyle}>{this.state.universityErr}</div>
-                        
-                        <div className="form-group">
-                            <label>Year of Graduation</label>
-                            <input type="number" 
-                            className="form-control" 
-                            name="year"
-                            placeholder="Enter your year of graduation" 
-                            value={this.state.year}
-                            onChange={this.inputHandler}/>
-                        </div>
-
-                        <div style={invalidStyle}>{this.state.yearErr}</div>
-                        
-                    </div>
-                );
-        }
 
 		return (
             <div>
-                <form style={style}>
+                <Card style={style}>
                     <h3>Sign Up</h3>
 
-                    <div className="form-group">
-                        <label>First name</label>
-                        <input type="text" 
-                        className="form-control" 
-                        name="firstName"
+                    <p>
+                    <label>First name</label>
+                    <Input name="firstName"
                         placeholder="First name" 
                         value={this.state.firstName}
                         onChange={this.inputHandler}/>
-                    </div>
+                    </p>
+                    
 
-                        <div style={invalidStyle}>{this.state.firstNameErr}</div>
+                    {this.state.firstNameErr!=="" ? (<div style={invalidStyle}>{this.state.firstNameErr}</div>) : null}
 
-                    <div className="form-group">
-                        <label>Last name</label>
-                        <input type="text" 
-                        className="form-control" 
-                        name="lastName"
+                    <p>
+                    <label>Last name</label>
+                    <Input name="lastName"
                         placeholder="Last name" 
                         value={this.state.lastName}
                         onChange={this.inputHandler}/>
-                    </div>
+                    </p>
+                    
 
-                    <div style={invalidStyle}>{this.state.lastNameErr}</div>
+                    {this.state.lastNameErr!=="" ? (<div style={invalidStyle}>{this.state.lastNameErr}</div>) : null}
 
-                    <div className="form-group">
-                        <label>Email address</label>
-                        <input type="email" 
-                        className="form-control" 
-                        name="email"
-                        placeholder="Enter email" 
+                    <p>
+                    <label >Email address</label>
+                    <Input placeholder="Enter email" name="email"
+                        prefix={<UserOutlined />} 
                         value={this.state.email}
                         onChange={this.inputHandler}/>
-                    </div>
+                    </p>
+                    
 
-                    <div style={invalidStyle}>{this.state.emailErr}</div>
+                    {this.state.emailErr!=="" ? (<div style={invalidStyle}>{this.state.emailErr}</div>) : null}
 
-                    <div className="form-group">
-                        <label>Password</label>
-                        <input type="password" 
-                        className="form-control" 
+                    <p>
+                    <label >Password</label>
+                    <Input.Password placeholder="Enter password" 
                         name="password"
-                        placeholder="Enter password" 
                         value={this.state.password}
                         onChange={this.inputHandler}/>
-                    </div>
-
+                    </p>
+                    
+                    
                     <p className="forgot-password text-right" style={passStyle}>
                         *Password must contain Minimum eight characters, at least one letter and one number
                     </p>
 
-                    <div style={invalidStyle}>{this.state.passwordErr}</div>
+                    {this.state.passwordErr!=="" ? (<div style={invalidStyle}>{this.state.passwordErr}</div>) : null}
 
-                    <div className="form-group">
-                        <label>Re-Enter Password</label>
-                        <input type="password" 
-                        className="form-control" 
+                    <p>
+                    <label >Re-Enter Password</label>
+                    <Input.Password placeholder="Re-Enter password" 
                         name="rePassword"
-                        placeholder="Re-Enter password" 
                         value={this.state.rePassword}
                         onChange={this.inputHandler}/>
-                    </div>
+                    </p>
+                    
 
-                    <div style={invalidStyle}>{this.state.rePasswordErr}</div>
+                    {this.state.rePasswordErr!=="" ? (<div style={invalidStyle}>{this.state.rePasswordErr}</div>) : null}
 
-                    <p>Enter your designation</p>
-                    <div className="radio">
-                        <input type="radio" 
-                        name="designation" 
-                        value="Teacher" 
-                        onClick={this.inputHandler}
-                        />
-                        <label>Teacher</label>
-                        <br/>
-                        <input 
-                        type="radio" 
-                        name="designation" 
-                        value="Student" 
-                        onClick={this.inputHandler}
-                        />
-                        <label>Student</label>
-                    </div>
+                    <p>
+                    <Checkbox onChange={this.handleCheckboxChange.bind(this)}>I want to apply as an educator</Checkbox>
+                    </p>
+                    
 
-                    <div style={invalidStyle}>{this.state.designationErr}</div>
+                    <p>
+                    <label>University</label>
+                    <Input name="university"
+                        placeholder="Enter your University" 
+                        value={this.state.university}
+                        onChange={this.inputHandler}/>
+                    </p>
+                    
 
-                    {extraInfo}
+                        {this.state.universityErr!=="" ? (<div style={invalidStyle}>{this.state.universityErr}</div>) : null}
+                        
+                        <label>Year of Graduation</label>
+                        <p>
+                        <DatePicker picker="year" 
+                        onChange={this.yearHandler}/>
+                        </p>
+                        
 
-                    <button type="submit" className="btn btn-primary " onClick={this.submitHandler}>Sign Up</button>
+                        {this.state.yearErr!=="" ? (<div style={invalidStyle}>{this.state.yearErr}</div>) : null}
+                        
+    
+                    <Button type="primary" htmlType="submit" onClick={this.submitHandler}>Sign Up</Button>
 
                     <p className="forgot-password text-right">
                         Already have an account? 
                         <NavLink className='nav-NavLink' to='/signin'>Sign In </NavLink>
                     </p>
                     
-                </form>
+                </Card>
                 <BrowserRouter>
                     <div className="auth-wrapper">
                         <div className="auth-inner">
