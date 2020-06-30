@@ -49,7 +49,7 @@ const DashboardView = props => {
               .map(post => {
                 return {
                   ...post,
-                  ratings: (Math.random() * (5 - 1) + 1).toFixed(1),
+                  ratings: (Number(post.avgRating || 0.0)).toFixed(1),
                   date: post.date.split("T")[0],
                 };
               })
@@ -173,12 +173,20 @@ const DashboardView = props => {
                         {post.author || "Cormen Stein"}
                       </div>
 
-                      <span style={{ fontWeight: 500 }}>Topics : </span>
+                      {post.tags && <span style={{ fontWeight: 500 }}>Topics : </span>}
                       <span>
-                        <span className={s.tagSpan}>
-                          {tags[(idx + 2) % tags.length]}
-                        </span>
-                        <span className={s.tagSpan}>{tags[idx]}</span>
+                        {
+                          post.tags && post.tags.map(
+                            tag => {
+                              return (
+                                <span className={s.tagSpan}>
+                                {tag}
+                              </span>
+                              )
+                            }
+                          )
+                        }
+                       
                       </span>
                     </Col>
 
