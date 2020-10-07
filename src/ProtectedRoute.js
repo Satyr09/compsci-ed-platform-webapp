@@ -16,7 +16,7 @@ const ProtectedRoute = ({Component,...rest})=>{
                 return <Component {...props}/>
             }}
         />)
-        :<Redirect to="/signin"/>
+        :<div>{JSON.stringify(authData)}</div>
     )
 }
 

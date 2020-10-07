@@ -37,22 +37,26 @@ function App() {
   const loginHandler = (data) => {
     console.log("Setting", data);
     setAuthData({ accessToken: data.accessToken, user: data.user });
-    window.location.reload(true);
+    //window.location.reload(true);
   }
   function getCookie(name) {
     var cookies = '; ' + document.cookie;
+    console.log(cookies);
     var splitCookie = cookies.split('; ' + name + '=');
-    if (splitCookie.length == 2) return splitCookie.pop();
+    if (splitCookie.length === 2) return splitCookie.pop();
   }
   function deleteCookie(name) {
     console.log("Hello");
     document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    window.location.reload(true);
+    //window.location.reload(true);
   };
   useEffect(() => {
+    console.log(getCookie("refreshToken"));
     if (getCookie("refreshToken")) {
-      if (!authData || !authData.accessToken) {
+      console.log("REFRESH TOKEN PRESENT< > RELOAD HAPPENED , ");
+      if (!authData.accessToken) {
         setAuthData({ ...authData, isLoading: true })
+        console.log("Fetching.......")
         fetch(`${process.env.REACT_APP_SERVER_URL}/auth/refresh/`, {
           method: "POST",
           mode: "cors",
@@ -76,9 +80,11 @@ function App() {
           })
       }
     } else {
+	console.log(authData);
+      //console.log("Trying to set auth data : ", authData)
       setAuthData({ ...authData, isLoading: false })
     }
-  }, [authData])
+  }, [authData.accessToken])
   const menu = (
     <Menu>
       <Menu.Item>
