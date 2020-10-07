@@ -56,7 +56,7 @@ const Leaderboard = (props) => {
 		//const qParams=queryString.parse(this.location.search);
 		let x = null;
 		if (!article)
-			fetch("http://localhost:5000/article", {
+			fetch(`${process.env.REACT_APP_SERVER_URL}/article`, {
 				mode: "cors",
 				headers: {
 					'Accept': 'application/json',
@@ -73,12 +73,12 @@ const Leaderboard = (props) => {
 				})
 				.catch(err => console.error(err));
 
-	}, [article])
+	}, [article, authData.accessToken])
 	useEffect(() => {
 		if (article) {
 			printTable();
 		}
-	}, [article])
+	}, [article, printTable])
 
 	const columns = [
 		{

@@ -37,7 +37,7 @@ const EditArticleView = props => {
 
   const handleArticleSubmit = e => {
     console.log("POSTING.....");
-    fetch("http://localhost:5000/article", {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/article`, {
       method: "POST",
       mode: "cors",
       headers: {

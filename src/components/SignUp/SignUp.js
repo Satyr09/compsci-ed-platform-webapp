@@ -149,9 +149,9 @@ class SignUp extends Component {
             designation: this.state.designation,
             university: this.state.university,
             year: this.state.year,
-            educatorStatus: this.state.educatorStatus,
+            educatorStatus: this.state.educatorStatus || null,
         };
-        fetch("http://localhost:5000/user/signup", {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/user/signup`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -165,7 +165,7 @@ class SignUp extends Component {
                 university: obj.university,
                 qualification: obj.qualification,
                 year: obj.year,
-                educatorStatus: obj.educatorStatus,
+                educatorStatus: obj.educatorStatus || "",
                 qualification: "B.E.",
             })
         })
@@ -183,7 +183,7 @@ class SignUp extends Component {
                         emailErr: ""
                     });
                     console.log(data.message);
-                    alert('Successfully Registered');
+                   // alert('Successfully Registered');
                     this.props.history.push('/signin');
                 }
             })

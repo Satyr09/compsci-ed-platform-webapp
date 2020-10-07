@@ -38,7 +38,7 @@ const Contest = props => {
         past: [],
         future: [],
     };
-    const segregateContests = allContests => {
+    const segregateContests = useCallback(allContests => {
         for (let i = 0; i < allContests.length; i++) {
             const { end, start } = allContests[i];
             const { startEpoch, endEpoch, presentEpoch } = epochCalculation(
@@ -52,14 +52,14 @@ const Contest = props => {
         }
         console.log(tempObj.live);
         return tempObj;
-    }
+    })
 
     React.useEffect(() => {
         let x = null;
         let y = null, z = null;
         console.log('Fetching...');
         const qParams = 1;
-        fetch("http://localhost:5000/data/2")
+        fetch(`${process.env.REACT_APP_SERVER_URL}/data/2`)
             .then(res => res.json())
             .then(data => {
                 console.log(data);
@@ -84,7 +84,7 @@ const Contest = props => {
                 }))
             })
             .catch(err => console.error(err));
-    }, []);
+    }, [segregateContests]);
 
     /*const addDays = (date, days) => {
         var result = new Date(date);
@@ -116,7 +116,7 @@ const Contest = props => {
         console.log('Fetching...');
         console.log(e);
         const qParams = e;
-        fetch(`http://localhost:5000/data/${qParams}`)
+        fetch(`${process.env.REACT_APP_SERVER_URL}/data/${qParams}`)
             .then(res => res.json())
             .then(data => {
                 console.log(data);

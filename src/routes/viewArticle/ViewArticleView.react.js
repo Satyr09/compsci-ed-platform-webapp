@@ -18,7 +18,7 @@ const ViewArticleView = props => {
   const onSubmit = async () => {
     try {
       console.log("Posting code");
-      const response = await fetch("http://localhost:5000/compile", {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/compile`, {
         method: "POST",
         body: JSON.stringify({ code: codeValue }),
       });
@@ -28,7 +28,7 @@ const ViewArticleView = props => {
 
       document.getElementById("outputArea").innerHTML = data;
 
-      const finalResponse = await fetch("http://localhost:5000/run");
+      const finalResponse = await fetch(`${process.env.REACT_APP_SERVER_URL}/run`);
       const answer = await finalResponse.text();
       console.log(answer, " ", finalResponse);
       document.getElementById("outputArea").innerHTML = answer;
@@ -55,7 +55,7 @@ const ViewArticleView = props => {
   React.useEffect(() => {
     const qParams = queryString.parse(props.location.search);
     if (authData && authData.accessToken) {
-      fetch(`http://localhost:5000/article/${qParams.id}`, {
+      fetch(`${process.env.REACT_APP_SERVER_URL}/article/${qParams.id}`, {
         method: "GET",
         withCredentials: true,
         mode: "cors",
@@ -70,13 +70,13 @@ const ViewArticleView = props => {
         })
         .catch(err => console.error(err));
     }
-  }, []);
+  }, [authData, props.location.search]);
 
   const handleYoutubeDataInit = async () => {
     if (article && article.content) {
       const searchTerm = article.title;
       console.log(article)
-      const data = await fetch(`http://localhost:5000/youtube?search=${searchTerm}`, {
+      const data = await fetch(`${process.env.REACT_APP_SERVER_URL}/youtube?search=${searchTerm}`, {
         method: "GET",
         withCredentials: true,
         mode: "cors",
@@ -92,7 +92,7 @@ const ViewArticleView = props => {
   }
   useEffect(() => {
     handleYoutubeDataInit();
-  }, [article])
+  }, [article, handleYoutubeDataInit])
   useEffect(() => {
     if (article && article.content)
       document.getElementById("articleContent").innerHTML = draftToHtml(
@@ -109,7 +109,7 @@ const ViewArticleView = props => {
 
 
   const handleFeedbackSubmission = () => {
-    fetch(`http://localhost:5000/feedback/`, {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/feedback/`, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -139,7 +139,7 @@ const ViewArticleView = props => {
       console.log("Should open...")
       setIsOpenPlayerModal(!isOpenPlayerModal);
     }
-  }, [videoPlayerURL])
+  }, [isOpenPlayerModal, videoPlayerURL])
   const { TextArea } = Input;
 
   return (

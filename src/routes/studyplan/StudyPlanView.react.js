@@ -22,7 +22,7 @@ const StudyPlanView = props => {
         const qParams = queryString.parse(props.location.search);
         const studyPlanID = qParams.id;
         if (authData && authData.accessToken) {
-            fetch(`http://localhost:5000/studyplan/${studyPlanID}`, {
+            fetch(`${process.env.REACT_APP_SERVER_URL}/studyplan/${studyPlanID}`, {
                 mode: "cors",
                 headers: {
                     'Accept': 'application/json',
@@ -35,7 +35,7 @@ const StudyPlanView = props => {
                 .then(async data => {
                     if (data.members.indexOf(authData.user.email) == -1) window.location = "/dashboard";
                     setStudyPlan(data);
-                    const studyPlanItems = await fetch(`http://localhost:5000/studyplan/${studyPlanID}/studyPlanItems`, {
+                    const studyPlanItems = await fetch(`${process.env.REACT_APP_SERVER_URL}/studyplan/${studyPlanID}/studyPlanItems`, {
                         mode: "cors",
                         headers: {
                             'Accept': 'application/json',
@@ -50,14 +50,14 @@ const StudyPlanView = props => {
                 })
                 .then(studyPlanItemsData => setStudyPlanItems(studyPlanItemsData))
         }
-    }, [authData])
+    }, [authData, props.location.search])
 
     const openMemberAdditionModal = () => {
         setIsMemberAdditionModalOpen(!isMemberAdditionModalOpen);
     }
 
     const handleMemberAddition = (email) => {
-        fetch(`http://localhost:5000/student/${email}`, {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/student/${email}`, {
             mode: "cors",
             headers: {
                 'Accept': 'application/json',
@@ -74,7 +74,7 @@ const StudyPlanView = props => {
                 const newMemberList = studyPlan.members;
                 if (newMemberList.indexOf(data.email) == -1) newMemberList.push(data.email)
                 const newStudyPlan = { ...studyPlan, members: newMemberList }
-                const result = await fetch(`http://localhost:5000/studyplan/`, {
+                const result = await fetch(`${process.env.REACT_APP_SERVER_URL}/studyplan/`, {
                     method: "PUT",
                     mode: "cors",
                     headers: {
@@ -125,7 +125,7 @@ const StudyPlanView = props => {
             inProgressList
         }
 
-        fetch(`http://localhost:5000/studyplanitem/`, {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/studyplanitem/`, {
             method: "PUT",
             mode: "cors",
             headers: {
@@ -144,7 +144,7 @@ const StudyPlanView = props => {
                 const qParams = queryString.parse(props.location.search);
                 const studyPlanID = qParams.id;
 
-                const studyPlanItems = await fetch(`http://localhost:5000/studyplan/${studyPlanID}/studyPlanItems`, {
+                const studyPlanItems = await fetch(`${process.env.REACT_APP_SERVER_URL}/studyplan/${studyPlanID}/studyPlanItems`, {
                     mode: "cors",
                     headers: {
                         'Accept': 'application/json',
@@ -186,7 +186,7 @@ const StudyPlanView = props => {
         b[sortCondition].localeCompare(a[sortCondition]),
       ):studyPlanItems;
         return filterBySearchText(temp)
-    }, [searchText, studyPlanItems, sortCondition])
+    }, [sortCondition, studyPlanItems, filterBySearchText])
 
     const handleCreateNewItem = () => {
         const newStudyPlanItem = {
@@ -200,7 +200,7 @@ const StudyPlanView = props => {
             status: "not started",
             studyPlanID: studyPlan._id
         }
-        fetch(`http://localhost:5000/studyplanitem/`, {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/studyplanitem/`, {
             method: "POST",
             mode: "cors",
             headers: {
@@ -219,7 +219,7 @@ const StudyPlanView = props => {
                 const qParams = queryString.parse(props.location.search);
                 const studyPlanID = qParams.id;
 
-                const studyPlanItems = await fetch(`http://localhost:5000/studyplan/${studyPlanID}/studyPlanItems`, {
+                const studyPlanItems = await fetch(`${process.env.REACT_APP_SERVER_URL}/studyplan/${studyPlanID}/studyPlanItems`, {
                     mode: "cors",
                     headers: {
                         'Accept': 'application/json',

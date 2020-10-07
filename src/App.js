@@ -18,7 +18,7 @@ import Dashboard from "./routes/dashboard";
 import MyStudyPlans from "./routes/mystudyplans";
 import StudyPlan from "./routes/studyplan";
 import "antd/dist/antd.css";
-import { Menu, Layout, Dropdown } from "antd";
+import { Menu, Layout, Dropdown, Card } from "antd";
 import Leaderboard from './components/Leaderboard/Leaderboard';
 import { DownOutlined, LogoutOutlined } from "@ant-design/icons";
 
@@ -53,7 +53,7 @@ function App() {
     if (getCookie("refreshToken")) {
       if (!authData || !authData.accessToken) {
         setAuthData({ ...authData, isLoading: true })
-        fetch("http://localhost:5000/auth/refresh/", {
+        fetch(`${process.env.REACT_APP_SERVER_URL}/auth/refresh/`, {
           method: "POST",
           mode: "cors",
           headers: {
@@ -78,7 +78,7 @@ function App() {
     } else {
       setAuthData({ ...authData, isLoading: false })
     }
-  }, [])
+  }, [authData])
   const menu = (
     <Menu>
       <Menu.Item>
@@ -148,7 +148,11 @@ function App() {
         </Layout>
       </Layout>
     </AuthContext.Provider>
-
+    // <Card title="HEllo" style={{width:"400px"}}>
+    //   <div>
+    //     asdasdas
+    //   </div>
+    // </Card>
   );
 }
 

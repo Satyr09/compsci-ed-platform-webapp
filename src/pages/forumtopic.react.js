@@ -21,7 +21,7 @@ const Forumtopic = props => {
     React.useEffect(() => {
         const qParams = queryString.parse(props.location.search);
         if (authData && authData.accessToken) {
-            fetch(`http://localhost:5000/topics/${qParams.id}`, {
+            fetch(`${process.env.REACT_APP_SERVER_URL}/topics/${qParams.id}`, {
                 method:"GET",
                 withCredentials: true,
                 mode:"cors",
@@ -39,7 +39,7 @@ const Forumtopic = props => {
             
             .catch(err => console.error(err));
         }
-    }, []);
+    }, [authData, props.location.search]);
 
         const data = [
             {
@@ -58,7 +58,7 @@ const Forumtopic = props => {
             console.log(comm);
             const qParams = queryString.parse(props.location.search);
             if (authData && authData.accessToken) {
-                fetch(`http://localhost:5000/topics/${qParams.id}`, {
+                fetch(`${process.env.REACT_APP_SERVER_URL}/topics/${qParams.id}`, {
                     method: "POST",
                     withCredentials: true,
                     mode:"cors",
@@ -84,7 +84,7 @@ const Forumtopic = props => {
         
         const allComment = () => {
             const qParams = queryString.parse(props.location.search);
-            fetch(`http://localhost:5000/topics/${qParams.id}`, {
+            fetch(`${process.env.REACT_APP_SERVER_URL}/topics/${qParams.id}`, {
                 method:"GET",
                 withCredentials: true,
                 mode:"cors",

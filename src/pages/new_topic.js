@@ -47,7 +47,7 @@ const NewTopic = (props) => {
         
         console.log({title, context});
         if (authData && authData.accessToken) {
-            fetch("http://localhost:5000/topics", {
+            fetch(`${process.env.REACT_APP_SERVER_URL}/topics`, {
                 method: "POST",
                 withCredentials: true,
                 mode:"cors",

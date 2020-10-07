@@ -34,7 +34,7 @@ const DashboardView = props => {
 
   React.useEffect(() => {
     if (authData && authData.accessToken) {
-      fetch("http://localhost:5000/article/", {
+      fetch(`${process.env.REACT_APP_SERVER_URL}/article/`, {
         method: "GET",
         withCredentials: true,
         mode: "cors",
@@ -60,7 +60,7 @@ const DashboardView = props => {
         })
         .catch(err => console.error(err));
     }
-  }, []);
+  }, [authData]);
 
   const Bookmark = () => (
     <img src={BookmarkIcon} alt="bookmark" style={{ height: "30px" }} />
