@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import s from "./ForumDashboard.module.css";
-import { Row, Col, Card, Tag, Select, Pagination, Avatar, Divider, Input, Breadcrumb } from "antd";
+import { Row, Col, Card, Tag, Button, Avatar, Divider, Input, Breadcrumb, message } from "antd";
 import { UserOutlined } from '@ant-design/icons';
 import "../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { withRouter, NavLink } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { AuthContext } from "../App";
 import BreadcrumbItem from "antd/lib/breadcrumb/BreadcrumbItem";
 import articleIcon from "../images/article.svg"
@@ -25,8 +25,8 @@ const ForumDashboard = props => {
 
   React.useEffect(() => {
     console.log("FETCHING");
-    if (authData && authData.accessToken) {
-      fetch("http://localhost:5000/topics", {
+    //if (authData && authData.accessToken) {
+      fetch(`http://localhost:5000/topics`, {
         method:"GET",
         withCredentials: true,
         mode:"cors",
@@ -51,7 +51,7 @@ const ForumDashboard = props => {
           );
         })
         .catch(err => console.error(err));
-    }
+    //}
   }, []);
 
   const [filterText, setFilterText] = React.useState();
@@ -60,28 +60,35 @@ const ForumDashboard = props => {
     setFilterText(e.target.value);
   };
 
-  const handleSort = value => {
+  /*const handleSort = value => {
     const sortedPosts = [...posts].sort((a, b) =>
       b[value].localeCompare(a[value]),
     );
     setPosts(sortedPosts);
-  };
+  };*/
 
-  const [Current,setCurrent] = React.useState(3);
+  /*const [Current,setCurrent] = React.useState(3);
 
   const onChange = page => {
       console.log(page);
       setCurrent({
         Current: page,
       });
-    };  
-  const { Option } = Select;
+    };*/
+  
+
+  const submithandler = () =>{
+    if(authData && authData.accessToken) {
+      window.location.assign("/new_topic");
+    }else {message.info("Please signin !")}
+  }
+  //const { Option } = Select;
   return (
     <React.Fragment>
       <div className="container my-3">
       <div className="row">
       <div className="col-12 col-xl">
-        <Card bodyStyle={{ padding: 15 }} style={{width:"75vw"}} style={{ margin:"45px auto"}} className={s.bodyCard}>
+        <Card bodyStyle={{ padding: 15 }} style={{width:"75vw", margin:"45px auto"}} className={s.bodyCard}>
           <div style={{ position: "absolute", top: "-100px", left: "-50px" }}>
             <img style={{ height: "250px", width: "250px" }} src={articleIcon} />
           </div>
@@ -109,10 +116,13 @@ const ForumDashboard = props => {
                   />
                 </div>
               </Col>
+              <Col sm={{ span: 10, offset: 0 }} xs={{ span: 24, offset: 0 }}>
+              <Button onClick={submithandler} className="btn btn-lg btn-primary">Post</Button>
+              </Col>
             </Row>
           </div>
           {posts &&
-            posts
+            posts 
               .filter(post =>
                 post.title
                   .toLowerCase()
@@ -147,12 +157,27 @@ const ForumDashboard = props => {
                         >
                           {post.author || "Cormen Stein"}
                         </div>
-                          <span style={{ fontWeight: 500 }}>Tags : </span>
+                         {/* <span style={{ fontWeight: 500 }}>Tags : </span>
                           <span>
                           <span className={s.tagSpan}>
                             {tags[(idx + 2) % tags.length]}
                         </span>
                           <span className={s.tagSpan}>{tags[idx]}</span>
+                        </span>*/}
+                        {post.tags && post.tags.length ? <span style={{ fontWeight: 500 }}>Tags : </span> : null}
+                        <span>
+                          {
+                            post.tags && post.tags.map(
+                              tag => {
+                                return (
+                                  <span className={s.tagSpan}>
+                                    {tag}
+                                  </span>
+                                )
+                              }
+                            )
+                          }
+
                         </span>
                       </Col>
 
@@ -193,14 +218,10 @@ const ForumDashboard = props => {
                   </div>
                 );
               })}
-        </Card><br/>
-        <div className="mb-3 clearfix">
-            <nav aria-label="Navigate post pages" className="float-lg-right">
-              <Pagination current={Current} onChange={onChange} total={50} />
-            </nav>
-        </div>        
-        <br/><br/>        
-        <NavLink to="/new_topic" className="btn btn-lg btn-primary">New topic</NavLink>
+              
+        </Card>
+
+        
         </div>         
         </div>
       </div>
