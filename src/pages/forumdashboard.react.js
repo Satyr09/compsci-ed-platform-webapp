@@ -116,9 +116,6 @@ const ForumDashboard = props => {
                   />
                 </div>
               </Col>
-              <Col sm={{ span: 10, offset: 0 }} xs={{ span: 24, offset: 0 }}>
-              <Button onClick={submithandler} className="btn btn-lg btn-primary">Post</Button>
-              </Col>
             </Row>
           </div>
           {posts &&
@@ -220,7 +217,7 @@ const ForumDashboard = props => {
               })}
               
         </Card>
-
+        <Button onClick={submithandler} className="btn btn-lg btn-primary">Post</Button>
         
         </div>         
         </div>
