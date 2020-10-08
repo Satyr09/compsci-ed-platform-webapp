@@ -149,13 +149,8 @@ const NewTopic = (props) => {
             >
               <Option value="Genral">General</Option>
               <Option value="Contest">Contest</Option>
-              <Option value="Dynamic Programming">Dynamic Programming</Option>
-              <Option value="DFS">DFS</Option>
-              <Option value="BFS">BFS</Option>
-              <Option value="Linked List">Linked List</Option>
-              <Option value="Stack">Stack</Option>
-              <Option value="Queue">Queue</Option>
-              <Option value="Binary Search">Binary Search</Option>
+              <Option value="DFS">Programming</Option>
+              <Option value="Binary Search">Interview Experience</Option>
               <Option value="Data Structures And Algorithms">
                 Data Structures And Algorithms
               </Option>

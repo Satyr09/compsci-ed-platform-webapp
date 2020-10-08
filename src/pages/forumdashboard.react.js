@@ -217,7 +217,7 @@ const ForumDashboard = props => {
               })}
               
         </Card>
-        <Button onClick={submithandler} className="btn btn-lg btn-primary">Post</Button>
+        <Button onClick={submithandler} className="btn btn-primary">Post</Button>
         
         </div>         
         </div>
